@@ -17,11 +17,12 @@ Jeweler::Tasks.new do |gem|
   gem.name = "whiplash"
   gem.homepage = "http://github.com/ideaoforder/whiplash"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Ruby Gem connecting to Whiplash Merchandising API}
+  gem.description = %Q{Ruby Gem connecting to Whiplash Merchandising API}
   gem.email = "mark@sitesteaders.com"
   gem.authors = ["Mark Dickson"]
   # dependencies defined in Gemfile
+  gem.files = Dir.glob('lib/**/*.rb')
 end
 Jeweler::RubygemsDotOrgTasks.new
 
