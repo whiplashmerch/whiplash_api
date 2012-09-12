@@ -1,4 +1,4 @@
-module Whiplash
+module WhiplashAPI
   
   class Item < Base
   end

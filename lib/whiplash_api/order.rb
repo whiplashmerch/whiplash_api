@@ -1,4 +1,4 @@
-module Whiplash
+module WhiplashAPI
   
   class Order < Base
   end

@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestWhiplash < Test::Unit::TestCase
+class TestWhiplashAPI < Test::Unit::TestCase
   should "probably rename this file and start testing for real" do
     flunk "hey buddy, you should probably rename this file and start testing for real"
   end

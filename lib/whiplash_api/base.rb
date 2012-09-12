@@ -1,4 +1,4 @@
-module Whiplash
+module WhiplashAPI
 
   # Example Class Method
   # def reserved(*names)
@@ -6,7 +6,7 @@ module Whiplash
   # end
 
   class Base < ActiveResource::Base
-    extend Whiplash
+    extend WhiplashAPI
     
     self.site = 'http://localhost:3000/api/'
     self.format = :json

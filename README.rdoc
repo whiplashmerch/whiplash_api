@@ -1,6 +1,62 @@
-= whiplash
+Whiplash API V1 - Ruby Client
+================================
 
-Description goes here.
+This library provides a wrapper around the Whiplash Merchandising REST API for use within
+Ruby apps or via the console.
+
+== Note
+
+**If you are using a Rails app, the advised approach is to use ActiveResource. You can get started or gain inspiration from our example Rails app: https://github.com/ideaoforder/whiplash-rails-example**
+
+== Requirements
+
+- Ruby 1.8.7+
+- Rubygems
+- JSON
+- ActiveResource
+
+A valid API key is required to authenticate requests. You can find your API key on your customer account page.
+
+== Installation
+
+For the moment, you're limited to using Bundler, or installing from source--we'll leave you to your own devices on that one. We'll be up on RubyGems in no time! And then, the command will just look like:
+
+```
+gem install whiplash_api 
+```
+
+Or if you're using Bundler:
+
+```
+gem 'whiplash_api', :git => 'git://github.com/ideaoforder/whiplash_api'
+```
+
+== Configuration
+
+To use the API client in your Ruby code, provide the required credentials as follows:
+
+```
+require 'whiplash_api'
+
+api = WhiplashApi::Api.new(:api_key => 'XXXXXXXXXXXXX')
+```
+
+== Usage
+
+The API currently gives you access to your Orders, Items, and OrderItems.
+
+```
+$ irb
+>
+> Whiplash::Base.headers()
+>
+> api.get_items.each { |item| puts item.title }
+>
+> api.get_orders.each { |order| puts orders.shipping_address1 }
+>
+```
+
+
 
 == Contributing to whiplash
  

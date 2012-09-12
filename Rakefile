@@ -14,11 +14,11 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "whiplash"
-  gem.homepage = "http://github.com/ideaoforder/whiplash"
+  gem.name = "whiplash_api"
+  gem.homepage = "http://github.com/ideaoforder/whiplash_api"
   gem.license = "MIT"
-  gem.summary = %Q{Ruby Gem connecting to Whiplash Merchandising API}
-  gem.description = %Q{Ruby Gem connecting to Whiplash Merchandising API}
+  gem.summary = %Q{Ruby Gem for connecting to the Whiplash Merchandising API}
+  gem.description = %Q{Ruby Gem for connecting to the Whiplash Merchandising API}
   gem.email = "mark@sitesteaders.com"
   gem.authors = ["Mark Dickson"]
   # dependencies defined in Gemfile
