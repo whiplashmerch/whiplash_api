@@ -25,6 +25,14 @@ module WhiplashAPI
           @headers ||= {}
         end
       end
+      
+      def api_key=(api_key)
+        headers['X-API-KEY'] = api_key
+      end
+      
+      def api_version=(v)
+        headers['X-API-VERSION'] = v
+      end
     
     end
     

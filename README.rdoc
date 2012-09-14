@@ -1,8 +1,7 @@
 Whiplash API V1 - Ruby Client
 ================================
 
-This library provides a wrapper around the Whiplash Merchandising REST API for use within
-Ruby apps or via the console.
+This library provides a wrapper around the Whiplash Merchandising REST API for use within Ruby apps or via the console.
 
 == Note
 
@@ -19,8 +18,6 @@ A valid API key is required to authenticate requests. You can find your API key 
 
 == Installation
 
-For the moment, you're limited to using Bundler, or installing from source--we'll leave you to your own devices on that one. We'll be up on RubyGems in no time! And then, the command will just look like:
-
 ```
 gem install whiplash_api 
 ```
@@ -28,7 +25,7 @@ gem install whiplash_api
 Or if you're using Bundler:
 
 ```
-gem 'whiplash_api', :git => 'git://github.com/ideaoforder/whiplash_api'
+gem 'whiplash_api'
 ```
 
 == Configuration
@@ -36,9 +33,10 @@ gem 'whiplash_api', :git => 'git://github.com/ideaoforder/whiplash_api'
 To use the API client in your Ruby code, provide the required credentials as follows:
 
 ```
+require 'rubygems'
 require 'whiplash_api'
 
-api = WhiplashApi::Api.new(:api_key => 'XXXXXXXXXXXXX')
+WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
 == Usage
@@ -48,17 +46,15 @@ The API currently gives you access to your Orders, Items, and OrderItems.
 ```
 $ irb
 >
-> Whiplash::Base.headers()
+> WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 >
-> api.get_items.each { |item| puts item.title }
+> items = WhiplashAPI::Item.all
 >
-> api.get_orders.each { |order| puts orders.shipping_address1 }
+> order = WhiplashAPI::Order.last
 >
 ```
 
-
-
-== Contributing to whiplash
+== Contributing to the Whiplash API Gem
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
@@ -70,6 +66,5 @@ $ irb
 
 == Copyright
 
-Copyright (c) 2012 Mark Dickson. See LICENSE.txt for
-further details.
+Copyright (c) 2012 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
 
