@@ -38,6 +38,11 @@ require 'whiplash_api'
 
 WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 ```
+You'll likely want to start by testing in the Sandbox:
+
+```
+ WhiplashApi::Base.test = true
+```
 
 == Usage
 
@@ -50,7 +55,13 @@ $ irb
 >
 > items = WhiplashAPI::Item.all
 >
+> items = WhiplashAPI::Item.sku('SOME-SKU-111')
+>
 > order = WhiplashAPI::Order.last
+>
+> orders = WhiplashAPI::Order.status('shipped')
+>
+> order_item = WhiplashAPI::OrderItem.originator(ID_IN_YOUR_STORE)
 >
 ```
 
