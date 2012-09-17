@@ -8,7 +8,7 @@ module WhiplashAPI
   class Base < ActiveResource::Base
     extend WhiplashAPI
     
-    self.site = 'http://localhost:3000/api/'
+    self.site = 'https://www.whiplashmerch.com/api/'
     self.format = :json
     
     # Thanks to Brandon Keepers for this little nugget:
@@ -32,6 +32,14 @@ module WhiplashAPI
       
       def api_version=(v)
         headers['X-API-VERSION'] = v
+      end
+      
+      def local=(v)
+        self.site = 'http://localhost:3000/api/' if v
+      end
+      
+      def test=(v)
+        self.site = 'http://testing.whiplashmerch.com/api/' if v
       end
     
     end
