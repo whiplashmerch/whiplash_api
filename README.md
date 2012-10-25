@@ -59,7 +59,7 @@ $ irb
 >
 > order = WhiplashAPI::Order.last
 >
-> orders = WhiplashAPI::Order.status('shipped')
+> orders = WhiplashAPI::Order.all(:params => {:status => 'shipped', :created_at_min => '2008-01-01'})
 >
 > order_item = WhiplashAPI::OrderItem.originator(ID_IN_YOUR_STORE)
 >
