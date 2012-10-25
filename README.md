@@ -3,7 +3,7 @@ Whiplash API V1 - Ruby Client
 
 This library provides a wrapper around the Whiplash Merchandising REST API for use within Ruby apps or via the console.
 
-== Note
+## Note
 
 **If you are using a Rails app, the advised approach is to use ActiveResource. You can get started or gain inspiration from our example Rails app: https://github.com/ideaoforder/whiplash-rails-example**
 
