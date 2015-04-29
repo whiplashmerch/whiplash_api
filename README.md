@@ -36,12 +36,12 @@ To use the API client in your Ruby code, provide the required credentials as fol
 require 'rubygems'
 require 'whiplash_api'
 
-WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
+WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 You'll likely want to start by testing in the Sandbox:
 
 ```
- WhiplashApi::Base.test = true
+ WhiplashAPI::Base.test = true
 ```
 
 ### Usage
@@ -51,7 +51,7 @@ The API currently gives you access to your Orders, Items, and OrderItems.
 ```
 $ irb
 >
-> WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
+> WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 >
 > items = WhiplashAPI::Item.all
 >
