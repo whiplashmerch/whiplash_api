@@ -37,6 +37,7 @@ module WhiplashApi
         end
       end
 
+      # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
         notice = self.find(id)
         raise Error, "No Shipment notice found with given ID." unless notice
