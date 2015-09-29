@@ -50,11 +50,11 @@ module WhiplashApi
       end
 
       # FIXME: throws 401 authentication error. Must confirm with James.
-      def destroy(id, args={})
+      def delete(id, args={})
         order_item = self.find(id)
         order = WhiplashApi::Order.find(order_item.order_id)
         if order.unprocessed? || order.being_processed?
-          self.delete(id, args)
+          super
         else
           raise Error, "You can not delete order items for orders which have already been processed."
         end
