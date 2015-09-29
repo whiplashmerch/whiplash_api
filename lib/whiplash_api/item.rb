@@ -37,7 +37,7 @@ module WhiplashApi
         required! args, "%s is required for updating the item.", %w[SKU]
 
         item = self.first_by_sku(args.delete(:sku))
-        raise Error, "No product found with given SKU." unless item
+        raise Error, "No item found with given SKU." unless item
         item.update_attributes(args) ? item : false
       end
 

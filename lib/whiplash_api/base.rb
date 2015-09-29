@@ -40,8 +40,8 @@ module WhiplashApi
 
       def required!(args, message, *fields)
         missing = fields.flatten.detect do |field|
-          args[field.to_s.underscore].to_s.empty? &&
-            args[field.to_s.underscore.to_sym].to_s.empty?
+          args[field.to_s.parameterize.underscore].to_s.empty? &&
+            args[field.to_s.parameterize.underscore.to_sym].to_s.empty?
         end
 
         raise Error, (message % missing) if missing
