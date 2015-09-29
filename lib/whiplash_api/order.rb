@@ -107,6 +107,14 @@ module WhiplashApi
       self.status.to_i == 40
     end
 
+    def unprocessed?
+      self.status.to_i < 100
+    end
+
+    def being_processed?
+      self.status.to_i == 100
+    end
+
     def pause
       if unshipped?
         self.put(:pause)
