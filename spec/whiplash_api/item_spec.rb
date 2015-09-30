@@ -12,11 +12,13 @@ describe WhiplashApi::Item do
     it "creates item with given attributes" do
       item = described_class.create sku: @sku, title: "Some Product Title"
       expect(item).to be_persisted
+      expect(described_class.all).to include(item)
     end
 
     xit "does not create item without a title" do
       item = described_class.create sku: @sku, title: nil
       expect(item).not_to be_persisted
+      expect(described_class.all).not_to include(item)
     end
   end
 

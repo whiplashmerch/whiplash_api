@@ -6,7 +6,10 @@ module WhiplashApi
       end
 
       def originator(id, args={})
-        self.get(:originator, {originator_id: id}.merge(args)).map{ |item| self.new(item) }
+        self.collection_name = "items/originator"
+        item = self.find(id, args) rescue nil
+        self.collection_name = "items"
+        item
       end
 
       # Find item with given ID, or else create a new item.

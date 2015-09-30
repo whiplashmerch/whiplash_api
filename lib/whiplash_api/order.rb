@@ -12,7 +12,7 @@ module WhiplashApi
       # this API endpoint.
       def originator(id, args={})
         self.collection_name = "orders/originator"
-        order = self.find(id, args)
+        order = self.find(id, args) rescue nil
         self.collection_name = "orders"
         order
       end
@@ -21,26 +21,11 @@ module WhiplashApi
         originator(id) || create(args.merge(originator_id: id))
       end
 
-      def create(args={})
-        required! args, "%s is required for creating the order.",
-          "Shipping Name", "Shipping Address 1", "Shipping City",
-          "Shipping Zip", "Email"
-        super
-      end
-
-      # FIXME: updating order status via the API does not update the status_name
-      # for the order. This should be resolved at service level to ensure data
-      # corruption does not happen.
-      #
       def update(args={})
-        required! args, "%s is required for creating the order.",
-          "Shipping Name", "Shipping Address 1", "Shipping City",
-          "Shipping Zip", "Email"
-
         order = self.originator(args[:originator_id])
         raise Error, "No order found with given Originator ID." unless order
 
-        if order.status.to_i < 300
+        if order.unshipped?
           order.update_attributes(args) ? order : false
         else
           raise Error, "Orders may only be updated before they have been shipped."
@@ -114,6 +99,7 @@ module WhiplashApi
     def being_processed?
       self.status.to_i == 100
     end
+    alias :processing? :being_processed?
 
     def pause
       if unshipped?
