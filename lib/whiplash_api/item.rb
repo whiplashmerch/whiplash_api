@@ -9,11 +9,11 @@ module WhiplashApi
         self.get(:originator, {originator_id: id}.merge(args)).map{ |item| self.new(item) }
       end
 
-      # Find items with given ID or SKU, or else, create a new item.
-      def find_or_create(args={})
-        item = self.find(args[:id]) if args[:id]
-        item = self.first_by_sku(args[:sku]) if !item && args[:sku]
-        item ? item : create(args)
+      # Find item with given ID, or else create a new item.
+      def find_or_create(id, args={})
+        self.find(id)
+      rescue WhiplashApi::RecordNotFound
+        create(args)
       end
 
       def find_or_create_by_sku(sku, args={})
@@ -24,20 +24,21 @@ module WhiplashApi
         originator(id) || create(args.merge(originator_id: id))
       end
 
-      # Note: Ideally, the API service should reject create requests that do not
-      # contain the required keys. But, in my testing, I found that API was
-      # allowing creation of items without providing a SKU.
-      #
-      def create(args={})
-        required! args, "%s is required for creating the item.", %w[SKU Title]
-        super
-      end
+      # # Note: Ideally, the API service should reject create requests that do not
+      # # contain the required keys. But, in my testing, I found that API was
+      # # allowing creation of items without providing a SKU.
+      # #
+      # def create(args={})
+      #   # required! args, "%s is required for creating the item.", %w[SKU Title]
+      #   super
+      # end
 
       def update(args={})
-        required! args, "%s is required for updating the item.", %w[SKU]
+        items = self.sku(args.delete(:sku))
+        raise Error, "No item was found with given SKU." if items.blank?
+        raise Error, "Multiple items were found with given SKU." if items.count > 1
 
-        item = self.first_by_sku(args.delete(:sku))
-        raise Error, "No item found with given SKU." unless item
+        item = items.first
         item.update_attributes(args) ? item : false
       end
 
@@ -45,12 +46,9 @@ module WhiplashApi
       def first_by_sku(sku, args={})
         self.sku(sku, args).first
       end
-
-      # FIXME: throws 401 authentication error. Must confirm with James.
-      def delete(id, args={}); end
     end
 
-    # Instance method to deactivate the current item.
+    # instance methods
     def destroy(args={})
       self.class.delete(self.id, args)
     end

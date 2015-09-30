@@ -25,6 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
 
   spec.add_dependency "thor"
-  spec.add_dependency "activesupport", "~> 3.2.22"
-  spec.add_dependency "activeresource", "~> 3.2.22"
+  spec.add_dependency "activesupport"
+  spec.add_dependency "activeresource", "~> 4.0.0"
 end

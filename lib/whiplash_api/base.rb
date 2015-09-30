@@ -1,5 +1,6 @@
 module WhiplashApi
-  class Error < StandardError; end
+  class Error < ::StandardError; end
+  class RecordNotFound < Error; end
 
   class Base < ActiveResource::Base
     self.site   = 'https://www.whiplashmerch.com/api/'
@@ -18,6 +19,11 @@ module WhiplashApi
         else
           @headers ||= {}
         end
+      end
+
+      def connection(refresh = false)
+        @connection = WhiplashApi::Connection.new(site, format) if refresh || @connection.nil?
+        super
       end
 
       def api_key=(api_key)
