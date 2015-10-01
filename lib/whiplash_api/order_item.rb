@@ -30,23 +30,24 @@ module WhiplashApi
         originator(id) || create(args.merge(originator_id: id))
       end
 
-      def create(args={})
-        required! args, "%s is required for creating the order item.",
-          "Order ID", "Item ID", "Quantity"
-        super
-      end
+      # def create(args={})
+      #   required! args, "%s is required for creating the order item.",
+      #     "Order ID", "Item ID", "Quantity"
+      #   super
+      # end
 
       def update(id, args={})
         order_item = self.find(id)
-        raise Error, "No order item found with given ID." unless order_item
 
         if args[:order_id].present?
           order = WhiplashApi::Order.find(args[:order_id])
-          raise Error, "No such order found to switch to." unless order
           raise Error, "You can only switch to unshipped orders." unless order.unshipped?
         end
 
         order_item.update_attributes(args) ? order_item : false
+      rescue WhiplashApi::RecordNotFound
+        message = order_item.present? ? "No such order found to switch to." : "No order item found with given ID."
+        raise RecordNotFound, message
       end
 
       # FIXME: throws 401 authentication error. Must confirm with James.
