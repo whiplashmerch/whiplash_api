@@ -12,7 +12,6 @@ module WhiplashApi
         item
       end
 
-      # Find item with given ID, or else create a new item.
       def find_or_create(id, args={})
         self.find(id)
       rescue WhiplashApi::RecordNotFound
@@ -26,15 +25,6 @@ module WhiplashApi
       def find_or_create_by_originator_id(id, args={})
         originator(id) || create(args.merge(originator_id: id))
       end
-
-      # # Note: Ideally, the API service should reject create requests that do not
-      # # contain the required keys. But, in my testing, I found that API was
-      # # allowing creation of items without providing a SKU.
-      # #
-      # def create(args={})
-      #   # required! args, "%s is required for creating the item.", %w[SKU Title]
-      #   super
-      # end
 
       def update(args={})
         items = self.sku(args.delete(:sku))

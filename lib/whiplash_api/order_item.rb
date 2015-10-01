@@ -17,8 +17,6 @@ module WhiplashApi
         super(scope, options)
       end
 
-      # FIXME: this feels a bit hackish, but there was no easy way to implement
-      # this API endpoint.
       def originator(id, args={})
         self.collection_name = "order_items/originator"
         order = self.find(id, args)
@@ -29,12 +27,6 @@ module WhiplashApi
       def find_or_create_by_originator_id(id, args={})
         originator(id) || create(args.merge(originator_id: id))
       end
-
-      # def create(args={})
-      #   required! args, "%s is required for creating the order item.",
-      #     "Order ID", "Item ID", "Quantity"
-      #   super
-      # end
 
       def update(id, args={})
         order_item = self.find(id)
@@ -52,7 +44,6 @@ module WhiplashApi
         raise RecordNotFound, message
       end
 
-      # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
         order_item = self.find(id)
         order = WhiplashApi::Order.find(order_item.order_id)

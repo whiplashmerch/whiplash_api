@@ -1,5 +1,6 @@
 require 'pry'
 
+# An example implementation of this gem.
 module WhiplashApi
   class CLI < Thor
 
@@ -30,6 +31,12 @@ module WhiplashApi
       message += "  %3s  " % (item.available ? "Yes" : "No")
       message += item.title
       say_status "Product", message
+    end
+
+    desc "test", "test"
+    def test
+      setup!
+      binding.pry
     end
 
     private

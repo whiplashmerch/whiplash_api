@@ -82,8 +82,9 @@ describe WhiplashApi::Item do
   # subsequent requests. Probably, the API service is not returning
   # `originator_id` for the items.
   describe ".originator" do
-    xit "can find an Item using its Originator ID" do
+    it "can find an Item using its Originator ID" do
       item = described_class.create sku: @sku, title: "EEE", originator_id: "ZZZ123"
+      binding.pry
       expect(described_class.originator("ZZZ123")).to eq item
     end
   end

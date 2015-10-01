@@ -8,8 +8,6 @@ module WhiplashApi
         status_mapping.invert[status.to_s.underscore.to_sym]
       end
 
-      # FIXME: this feels a bit hackish, but there was no easy way to implement
-      # this API endpoint.
       def originator(id, args={})
         self.collection_name = "orders/originator"
         order = self.find(id, args) rescue nil
@@ -23,7 +21,7 @@ module WhiplashApi
 
       def update(args={})
         order = self.originator(args[:originator_id])
-        raise Error, "No order found with given Originator ID." unless order
+        raise RecordNotFound, "No order found with given Originator ID." unless order
 
         if order.unshipped?
           order.update_attributes(args) ? order : false

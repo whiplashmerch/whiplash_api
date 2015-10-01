@@ -44,7 +44,6 @@ describe WhiplashApi::OrderItem do
       expect(test_order_items).to include(order_item)
     end
 
-    # FIXME: The following is throwing a `record not found` at service level.
     xit "allows filtering of listing using parameters" do
       order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
       expect(described_class.all(params: {order_id: @order.id, since_id: order_item.id}).count).to eq 0

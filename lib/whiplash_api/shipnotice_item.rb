@@ -38,7 +38,6 @@ module WhiplashApi
         raise RecordNotFound, "No shipnotice item found with given ID."
       end
 
-      # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
         snitem = self.find(id)
         notice = WhiplashApi::Shipnotice.find(snitem.shipnotice_id)

@@ -12,8 +12,6 @@ describe WhiplashApi::Order do
 
   before(:each) do
     @oid = Digest::MD5.hexdigest(Time.now.to_s)
-    orders = described_class.all(params: { shipping_country: "TS" }) rescue []
-    orders.each(&:cancel)
   end
 
   describe ".create" do
@@ -89,7 +87,7 @@ describe WhiplashApi::Order do
     it "raises error if no items are found with the given Originator ID" do
       expect {
         described_class.update(originator_id: @oid, shipping_name: "AAA")
-      }.to raise_error(WhiplashApi::Error).with_message("No order found with given Originator ID.")
+      }.to raise_error(WhiplashApi::RecordNotFound).with_message("No order found with given Originator ID.")
     end
 
     it "raises error when updating order which has already been shipped" do

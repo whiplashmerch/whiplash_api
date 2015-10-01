@@ -65,7 +65,6 @@ describe WhiplashApi::ShipnoticeItem do
       }.to raise_error(WhiplashApi::RecordNotFound).with_message("No shipnotice item found with given ID.")
     end
 
-    # FIXME: docs state wrong code/name for this status
     it "raises error when updating shipnotice item for a shipnotice which has been processed" do
       snitem = described_class.create @valid_attributes
       allow_any_instance_of(WhiplashApi::Shipnotice).to receive(:status).and_return(250)
