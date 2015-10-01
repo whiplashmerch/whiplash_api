@@ -9,7 +9,7 @@ This library provides a wrapper around the [Whiplash][whiplash] [Merchandising R
 
 ### Requirements
 
-- Ruby 1.9.2+
+- Ruby 1.9.3+
 - Rubygems
 - JSON
 - ActiveResource
