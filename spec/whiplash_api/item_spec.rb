@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe WhiplashApi::Item do
+  before :each do
+    @sku = "SOME-SKU-KEY"
+  end
   describe ".create" do
     it "creates item with given attributes" do
       item = described_class.create sku: @sku, title: "Some Product Title"
@@ -62,6 +65,7 @@ describe WhiplashApi::Item do
     end
 
     it "creates item with given attributes and a specific SKU, if it does not exist" do
+      @sku = "SOME-SKU-KEY-2"
       expect(described_class).to receive(:first_by_sku).with(@sku).twice.and_call_original
       expect(described_class).to receive(:create).once.and_call_original
 
@@ -90,6 +94,7 @@ describe WhiplashApi::Item do
 
   describe ".update" do
     it "updates the item with the given SKU" do
+      @sku = "SOME-SKU-KEY-3"
       item = described_class.create sku: @sku, title: "AAA"
       described_class.update(sku: @sku, title: "BBB")
       expect(item.reload.title).to eq "AAA"
@@ -97,7 +102,7 @@ describe WhiplashApi::Item do
 
     it "raises error if no items are found with the given SKU" do
       expect {
-        described_class.update(sku: @sku, title: "BBB")
+        described_class.update(sku: "SOME-SKU-KEY-THAT-DOES-NOT-EXIST", title: "BBB")
       }.to raise_error(WhiplashApi::Error).with_message("No item was found with given SKU.")
     end
 

@@ -11,18 +11,17 @@ WhiplashApi::Base.api_key = ENV['WL_KEY']
 module WhiplashApi
   module TestHelpers
     def self.teardown!
-      puts
-      puts "Removing/cancelling resources created while testing..."
-      puts "This can take a while..."
-
       # remove all created items
-      items = WhiplashApi::Item.sku(@sku) rescue []
-      items.each(&:destroy)
+      items = %w{SOME-SKU-KEY SOME-SKU-KEY-2 SOME-SKU-KEY-3}.map do |sku|
+        WhiplashApi::Item.sku(sku) rescue []
+      end.flatten.each(&:destroy)
+
       # cancel all created orders
       orders = WhiplashApi::Order.all(params: { shipping_country: "TS" }) rescue []
       order_items = orders.map{|order| WhiplashApi::OrderItem.all(params: {order_id: order.id})}.flatten
       order_items.each(&:destroy)
 
+      # delete all shipnotices
       notices  = WhiplashApi::Shipnotice.all.select{|sn| sn.name = "Some Name" && sn.warehouse_id == 1}
       sn_items = notices.map{|notice| WhiplashApi::ShipnoticeItem.all(params: {shipnotice_id: notice.id})}.flatten
       sn_items.each(&:destroy)
@@ -32,7 +31,18 @@ module WhiplashApi
 end
 
 RSpec.configure do |config|
+  config.before(:suite) do
+    puts "Removing/cancelling resources that may interfere with current tests..."
+    puts "This may take a while..."
+
+    WhiplashApi::TestHelpers.teardown!
+  end
+
   config.after(:suite) do
+    puts
+    puts "Removing/cancelling resources created while testing..."
+    puts "This may take a while..."
+
     WhiplashApi::TestHelpers.teardown!
   end
 end
