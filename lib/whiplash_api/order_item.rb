@@ -41,9 +41,11 @@ module WhiplashApi
 
         if args[:order_id].present?
           order = WhiplashApi::Order.find(args[:order_id])
-          raise Error, "You can only switch to unshipped orders." unless order.unshipped?
+        else
+          order = WhiplashApi::Order.find(order_item.order_id)
         end
 
+        raise Error, "You can only switch to unshipped orders." unless order.unshipped?
         order_item.update_attributes(args) ? order_item : false
       rescue WhiplashApi::RecordNotFound
         message = order_item.present? ? "No such order found to switch to." : "No order item found with given ID."

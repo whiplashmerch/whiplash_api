@@ -46,8 +46,7 @@ describe WhiplashApi::OrderItem do
   describe ".all" do
     it "lists all the items for the given Order" do
       order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
-      order_items = described_class.all params: { order_id: @order.id }
-      expect(order_items).to include(order_item)
+      expect(test_order_items).to include(order_item)
     end
 
     # FIXME: The following is throwing a `record not found` at service level.

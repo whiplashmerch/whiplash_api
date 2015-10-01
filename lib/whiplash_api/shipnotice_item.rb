@@ -17,33 +17,35 @@ module WhiplashApi
         super(scope, options)
       end
 
-      def create(args={})
-        required! args, "%s is required for creating the shipnotice item.",
-          "Shipnotice ID", "Item ID", "Quantity"
-        super
-      end
+      # def create(args={})
+      #   required! args, "%s is required for creating the shipnotice item.",
+      #     "Shipnotice ID", "Item ID", "Quantity"
+      #   super
+      # end
 
       def update(id, args={})
         shipnotice_item = self.find(id)
-        raise Error, "No order item found with given ID." unless order_item
 
-        if args[:order_id].present?
-          order = WhiplashApi::Order.find(args[:order_id])
-          raise Error, "No such order found to switch to." unless order
-          raise Error, "You can only switch to unshipped orders." unless order.unshipped?
+        if args[:shipnotice_id].present?
+          notice = WhiplashApi::Shipnotice.find(args[:shipnotice_id])
+        else
+          notice = WhiplashApi::Shipnotice.find(shipnotice_item.shipnotice_id)
         end
 
-        order_item.update_attributes(args) ? order_item : false
+        raise Error, "You can only update shipnotice items for unprocessed shipnotices." if notice.processed?
+        shipnotice_item.update_attributes(args) ? shipnotice_item : false
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No shipnotice item found with given ID."
       end
 
       # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
-        order_item = self.find(id)
-        order = WhiplashApi::Order.find(order_item.order_id)
-        if order.unprocessed? || order.being_processed?
-          super
+        snitem = self.find(id)
+        notice = WhiplashApi::Shipnotice.find(snitem.shipnotice_id)
+        if notice.processed?
+          raise Error, "You can not delete shipnotice items for shipnotices which have already been processed."
         else
-          raise Error, "You can not delete order items for orders which have already been processed."
+          super
         end
       end
     end
