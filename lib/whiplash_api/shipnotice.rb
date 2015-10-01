@@ -16,12 +16,6 @@ module WhiplashApi
         warehouse_mapping.invert[warehouse]
       end
 
-      # def create(args={})
-      #   required! args, "%s is required for creating the Shipment Notice.",
-      #     "Sender", "ETA", "Warehouse ID", "ShipNotice Items"
-      #   super
-      # end
-
       def update(id, args={})
         notice = self.find(id)
         if notice.received?
@@ -33,7 +27,6 @@ module WhiplashApi
         raise RecordNotFound, "No Shipment notice found with given ID."
       end
 
-      # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
         notice = self.find(id)
         if notice.received?

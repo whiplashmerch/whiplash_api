@@ -17,11 +17,11 @@ describe WhiplashApi::Shipnotice do
       expect(described_class.all).to include(notice)
     end
 
-    xit "does not create order without required fields" do
+    it "does not create shipment notice without required fields" do
       @valid_attributes.each_pair do |field, value|
-        notice = described_class.create @valid_attributes.merge(field => nil)
-        expect(notice).not_to be_persisted
-        expect(described_class.all).not_to include(notice)
+        expect{
+          described_class.create @valid_attributes.merge(field => nil)
+        }.to raise_error(WhiplashApi::Error)
       end
     end
   end

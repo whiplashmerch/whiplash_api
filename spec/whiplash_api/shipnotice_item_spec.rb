@@ -22,11 +22,11 @@ describe WhiplashApi::ShipnoticeItem do
       expect(test_shipnotice_items).to include(snitem)
     end
 
-    xit "does not create shipnotice item without required fields" do
+    it "does not create shipnotice item without required fields" do
       @valid_attributes.each_pair do |field, value|
-        snitem = described_class.create @valid_attributes.merge(field => nil)
-        expect(snitem).not_to be_persisted
-        expect(test_shipnotice_items).not_to include(snitem)
+        expect {
+          described_class.create @valid_attributes.merge(field => nil)
+        }.to raise_error(WhiplashApi::Error)
       end
     end
   end

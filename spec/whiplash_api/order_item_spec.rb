@@ -18,11 +18,6 @@ describe WhiplashApi::OrderItem do
     @oid = Digest::MD5.hexdigest(Time.now.to_s)
   end
 
-  # TODO: teardown
-  after(:all) do
-
-  end
-
   def test_order_items
     described_class.all params: { order_id: @order.id }
   end
@@ -33,12 +28,12 @@ describe WhiplashApi::OrderItem do
       expect(order_item).to be_persisted
       expect(test_order_items).to include(order_item)
     end
-    xit "does not create order item without required fields" do
-      attributes = { quantity: 1, item_id: @item.id, order_id: @order.id }
+    it "does not create order item without Order and Item IDs" do
+      attributes = { item_id: @item.id, order_id: @order.id }
       attributes.each_pair do |field, value|
-        order_item = described_class.create attributes.merge(field => nil)
-        expect(order_item).not_to be_persisted
-        expect(test_order_items).not_to include(order_item)
+        expect {
+          described_class.create attributes.merge(field => nil)
+        }.to raise_error(WhiplashApi::RecordNotFound)
       end
     end
   end
