@@ -6,21 +6,13 @@ module WhiplashApi
     self.site   = 'https://www.whiplashmerch.com/api/'
     self.format = :json
 
-    # Thanks to Brandon Keepers for this little nugget:
-    # http://opensoul.org/blog/archives/2010/02/16/active-resource-in-practice/
     class << self
-      # If headers are not defined in a given subclass, then obtain
-      # headers from the superclass.
-      def headers
-        if defined?(@headers)
-          @headers
-        elsif superclass != Object && superclass.headers
-          superclass.headers
-        else
-          @headers ||= {}
-        end
+      def testing!
+        self.site = 'http://testing.whiplashmerch.com/api/'
       end
 
+      # Override the connection that ActiveResource uses, so that we can add our
+      # own error messages for the weird cases when API returns 422 error.
       def connection(refresh = false)
         @connection = WhiplashApi::Connection.new(site, format) if refresh || @connection.nil?
         super
@@ -32,25 +24,6 @@ module WhiplashApi
 
       def api_version=(v)
         headers['X-API-VERSION'] = v
-      end
-
-      def use_local_endpoints!
-        self.site = 'http://localhost:3000/api/'
-      end
-
-      def use_test_endpoints!
-        self.site = 'http://testing.whiplashmerch.com/api/'
-      end
-
-      protected
-
-      def required!(args, message, *fields)
-        missing = fields.flatten.detect do |field|
-          args[field.to_s.parameterize.underscore].to_s.empty? &&
-            args[field.to_s.parameterize.underscore.to_sym].to_s.empty?
-        end
-
-        raise Error, (message % missing) if missing
       end
     end
   end

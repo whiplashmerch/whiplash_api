@@ -1,20 +1,22 @@
 Whiplash API V1 - Ruby Client
 ================================
 
-This library provides a wrapper around the Whiplash Merchandising REST API for use within Ruby apps or via the console.
+This library provides a wrapper around the [Whiplash][whiplash] [Merchandising REST API][api] for use within Ruby apps or via the console.
 
 ### Note
 
-**If you are using a Rails app, the advised approach is to use ActiveResource. You can get started or gain inspiration from our example Rails app: https://github.com/ideaoforder/whiplash-rails-example**
+**If you are using a Rails app, the advised approach is to use ActiveResource. You can get started or gain inspiration from our [example Rails app][app]: **
 
 ### Requirements
 
-- Ruby 1.8.7+
+- Ruby 1.9.2+
 - Rubygems
 - JSON
 - ActiveResource
 
 A valid API key is required to authenticate requests. You can find your API key on your customer account page.
+
+You can, also, use the test API key `Hc2BHTn3bcrwyPooyYTP` to test this client.
 
 ### Installation
 
@@ -38,15 +40,18 @@ require 'whiplash_api'
 
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
+
 You'll likely want to start by testing in the Sandbox:
 
 ```
- WhiplashAPI::Base.test = true
+ WhiplashAPI::Base.testing!
 ```
+
+You can, also, check a very basic implementation/example inside `exe/whiplash_api` file.
 
 ### Usage
 
-The API currently gives you access to your Orders, Items, and OrderItems.
+The API currently gives you access to all endpoints supported by [Whiplash][whiplash] [Merchandising API][api].
 
 ```
 $ irb
@@ -75,7 +80,19 @@ $ irb
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
+### Testing Whiplash API Gem
+
+You can run the tests on the current version of this gem, by cloning it locally, and then, running:
+
+```
+WL_KEY=Hc2BHTn3bcrwyPooyYTP rspec spec
+```
+
 ### Copyright
 
 Copyright (c) 2012 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
 
+
+  [whiplash]: https://www.whiplashmerch.com/
+  [api]: https://www.whiplashmerch.com/developers/api
+  [app]: https://github.com/ideaoforder/whiplash-rails-example
