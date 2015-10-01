@@ -63,5 +63,10 @@ module WhiplashApi
         end
       end
     end
+
+    # instance methods
+    def destroy
+      self.class.delete(self.id)
+    end
   end
 end

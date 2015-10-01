@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe WhiplashApi::Item do
-
-  before(:each) do
-    @sku  = "SOME-SKU-KEY"
-    items = described_class.sku(@sku) rescue []
-    items.each{ |item| item.destroy }
-  end
-
   describe ".create" do
     it "creates item with given attributes" do
       item = described_class.create sku: @sku, title: "Some Product Title"

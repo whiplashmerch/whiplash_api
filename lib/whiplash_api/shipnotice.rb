@@ -72,5 +72,9 @@ module WhiplashApi
     def processed?
       self.status.to_i > 200
     end
+
+    def destroy
+      self.class.delete(self.id)
+    end
   end
 end
