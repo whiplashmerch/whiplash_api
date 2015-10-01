@@ -16,36 +16,33 @@ module WhiplashApi
         warehouse_mapping.invert[warehouse]
       end
 
-      def create(args={})
-        required! args, "%s is required for creating the Shipment Notice.",
-          "Sender", "ETA", "Warehouse ID", "ShipNotice Items"
-        super
-      end
+      # def create(args={})
+      #   required! args, "%s is required for creating the Shipment Notice.",
+      #     "Sender", "ETA", "Warehouse ID", "ShipNotice Items"
+      #   super
+      # end
 
-      # FIXME: updating order status via the API does not update the status_name
-      # for the order. This should be resolved at service level to ensure data
-      # corruption does not happen.
-      #
-      def update(args={})
-        notice = self.find(args[:id])
-        raise Error, "No Shipment notice found with given ID." unless notice
-
+      def update(id, args={})
+        notice = self.find(id)
         if notice.received?
           raise Error, "Shipment notices may only be updated before they have been received."
         else
           notice.update_attributes(args) ? notice : false
         end
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No Shipment notice found with given ID."
       end
 
       # FIXME: throws 401 authentication error. Must confirm with James.
       def delete(id, args={})
         notice = self.find(id)
-        raise Error, "No Shipment notice found with given ID." unless notice
         if notice.received?
           raise Error, "Shipment notices may only be deleted before they have been received."
         else
           super
         end
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No Shipment notice found with given ID."
       end
 
       private
