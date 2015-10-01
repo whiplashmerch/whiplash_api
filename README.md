@@ -88,6 +88,8 @@ You can run the tests on the current version of this gem, by cloning it locally,
 WL_KEY=Hc2BHTn3bcrwyPooyYTP rspec spec
 ```
 
+Note that, testing can take a long time, since tests are performed directly on the testing server, and no mocks are used. This is to ensure that the API conforms to the tests, at the same time.
+
 ### Copyright
 
 Copyright (c) 2012 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
