@@ -32,7 +32,7 @@ module WhiplashApi
           notice = WhiplashApi::Shipnotice.find(shipnotice_item.shipnotice_id)
         end
 
-        raise Error, "You can only update shipnotice items for unprocessed shipnotices." if notice.processed?
+        raise Error, "You can not update shipnotice items for shipnotices that have arrived." if notice.received?
         shipnotice_item.update_attributes(args) ? shipnotice_item : false
       rescue WhiplashApi::RecordNotFound
         raise RecordNotFound, "No shipnotice item found with given ID."
@@ -41,8 +41,8 @@ module WhiplashApi
       def delete(id, args={})
         snitem = self.find(id)
         notice = WhiplashApi::Shipnotice.find(snitem.shipnotice_id)
-        if notice.processed?
-          raise Error, "You can not delete shipnotice items for shipnotices which have already been processed."
+        if notice.received?
+          raise Error, "You can not delete shipnotice items for shipnotices which have arrived."
         else
           super
         end

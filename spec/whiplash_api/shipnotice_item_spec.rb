@@ -67,10 +67,10 @@ describe WhiplashApi::ShipnoticeItem do
 
     it "raises error when updating shipnotice item for a shipnotice which has been processed" do
       snitem = described_class.create @valid_attributes
-      allow_any_instance_of(WhiplashApi::Shipnotice).to receive(:status).and_return(250)
+      allow_any_instance_of(WhiplashApi::Shipnotice).to receive(:status).and_return(150)
       expect {
         described_class.update(snitem.id, quantity: 2)
-      }.to raise_error(WhiplashApi::Error).with_message("You can only update shipnotice items for unprocessed shipnotices.")
+      }.to raise_error(WhiplashApi::Error).with_message("You can not update shipnotice items for shipnotices that have arrived.")
     end
   end
 
@@ -82,12 +82,12 @@ describe WhiplashApi::ShipnoticeItem do
       expect(test_shipnotice_items).not_to include(snitem)
     end
 
-    it "raises error when trying to delete a shipnotice item for a shipnotice which has already been processed" do
+    it "raises error when trying to delete a shipnotice item for a shipnotice which has been received" do
       snitem = described_class.create @valid_attributes
-      allow_any_instance_of(WhiplashApi::Shipnotice).to receive(:status).and_return(250)
+      allow_any_instance_of(WhiplashApi::Shipnotice).to receive(:status).and_return(150)
       expect {
         described_class.delete(snitem.id)
-      }.to raise_error(WhiplashApi::Error).with_message("You can not delete shipnotice items for shipnotices which have already been processed.")
+      }.to raise_error(WhiplashApi::Error).with_message("You can not delete shipnotice items for shipnotices which have arrived.")
     end
   end
 end
