@@ -129,8 +129,7 @@ describe WhiplashApi::Order do
     order.cancel
     expect(order.reload).to be_cancelled
 
-    puts "[Possible Service Bug]: Cannot uncancel a cancelled order."
-    # order.uncancel
-    # expect(order.reload).to be_processing
+    order.uncancel
+    expect(order.reload).to be_processing
   end
 end
