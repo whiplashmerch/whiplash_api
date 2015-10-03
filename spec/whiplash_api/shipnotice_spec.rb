@@ -2,11 +2,12 @@ require 'spec_helper'
 
 describe WhiplashApi::Shipnotice do
   before(:all) do
-    @item = WhiplashApi::Item.create sku: "SOME-SKU-KEY"
+    @item = WhiplashApi::Item.create sku: "SOME-SKU-KEY", title: "Some Title"
     @valid_attributes = {
       sender: "Some Name",
       eta: "2016-01-01 03:00",
-      warehouse_id: 1
+      warehouse_id: 1,
+      shipnotice_items: [{item_id: @item.id, quantity: 1}]
     }
   end
 
@@ -14,10 +15,11 @@ describe WhiplashApi::Shipnotice do
     it "creates shipment notice with given attributes" do
       notice = described_class.create @valid_attributes
       expect(notice).to be_persisted
+      expect(notice.shipnotice_items.map(&:item_id)).to include @item.id
       expect(described_class.all).to include(notice)
     end
 
-    it "does not create shipment notice without required fields" do
+    xit "does not create shipment notice without required fields" do
       @valid_attributes.each_pair do |field, value|
         expect{
           described_class.create @valid_attributes.merge(field => nil)

@@ -16,8 +16,12 @@ describe WhiplashApi::Order do
 
   describe ".create" do
     it "creates order with given attributes" do
-      order = described_class.create valid_attributes
+      item  = WhiplashApi::Item.create sku: "SOME-SKU-KEY", title: "Some Title"
+      attributes = valid_attributes.merge(order_items: [{item_id: item.id, quantity: 1}])
+      order = described_class.create attributes
+
       expect(order).to be_persisted
+      expect(order.order_items.map(&:item_id)).to include item.id
       expect(described_class.all).to include(order)
     end
 
