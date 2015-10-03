@@ -37,10 +37,11 @@ describe WhiplashApi::ShipnoticeItem do
       expect(test_shipnotice_items).to include(snitem)
     end
 
-    xit "allows filtering of listing using parameters" do
+    it "allows filtering of listing using parameters" do
       snitem = described_class.create @valid_attributes
       expect(described_class.all(params: {shipnotice_id: @notice.id, since_id: snitem.id}).count).to eq 0
-      described_class.create @valid_attributes
+      item2 = WhiplashApi::Item.create sku: "SOME-SKU-KEY", title: "Some Title"
+      described_class.create @valid_attributes.merge(item_id: item2.id)
       expect(described_class.all(params: {shipnotice_id: @notice.id, since_id: snitem.id}).count).to eq 1
     end
   end

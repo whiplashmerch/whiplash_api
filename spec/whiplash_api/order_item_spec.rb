@@ -44,7 +44,7 @@ describe WhiplashApi::OrderItem do
       expect(test_order_items).to include(order_item)
     end
 
-    xit "allows filtering of listing using parameters" do
+    it "allows filtering of listing using parameters" do
       order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
       expect(described_class.all(params: {order_id: @order.id, since_id: order_item.id}).count).to eq 0
       described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
