@@ -22,9 +22,9 @@ describe WhiplashApi::Item do
 
     xit "does not create item without a title" do
       count = described_class.count
-      item  = described_class.create sku: @sku, title: nil
-      expect(item).not_to be_persisted
-      expect(described_class.count).to eq count
+      expect{
+        described_class.create sku: @sku, title: nil
+      }.to raise_error(WhiplashApi::Error)
     end
   end
 

@@ -11,12 +11,20 @@ describe WhiplashApi::Shipnotice do
     }
   end
 
+  describe ".count" do
+    it "counts the number of shipnotices (with filtering) in the customer's account" do
+      expect(described_class.count).to be_a(Integer)
+      expect(described_class.count(created_at_min: 4.hours.since)).to eq 0
+    end
+  end
+
   describe ".create" do
     it "creates shipment notice with given attributes" do
+      count  = described_class.count
       notice = described_class.create @valid_attributes
       expect(notice).to be_persisted
+      expect(described_class.count).to eq(count + 1)
       expect(notice.shipnotice_items.map(&:item_id)).to include @item.id
-      expect(described_class.all).to include(notice)
     end
 
     xit "does not create shipment notice without required fields" do
@@ -36,9 +44,9 @@ describe WhiplashApi::Shipnotice do
 
     it "allows filtering of listing using parameters" do
       notice = described_class.create @valid_attributes
-      expect(described_class.all(params: {since_id: notice.id}).count).to eq 0
+      expect(described_class.count(since_id: notice.id)).to eq 0
       described_class.create @valid_attributes
-      expect(described_class.all(params: {since_id: notice.id}).count).to eq 1
+      expect(described_class.count(since_id: notice.id)).to eq 1
     end
   end
 

@@ -8,6 +8,10 @@ module WhiplashApi
         status_mapping.invert[status.to_s.underscore.to_sym]
       end
 
+      def count(args={})
+        self.get(:count, args)
+      end
+
       def originator(id, args={})
         self.collection_name = "orders/originator"
         order = self.find(id, args) rescue nil

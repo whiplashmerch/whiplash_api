@@ -16,6 +16,10 @@ module WhiplashApi
         warehouse_mapping.invert[warehouse]
       end
 
+      def count(args={})
+        self.get(:count, args)
+      end
+
       def update(id, args={})
         notice = self.find(id)
         if notice.received?

@@ -14,22 +14,31 @@ describe WhiplashApi::Order do
     @oid = Digest::MD5.hexdigest(Time.now.to_s)
   end
 
+  describe ".count" do
+    it "counts the number of orders (with filtering) in the customer's account" do
+      expect(described_class.count).to be_a(Integer)
+      expect(described_class.count(created_at_min: 4.hours.since)).to eq 0
+    end
+  end
+
   describe ".create" do
     it "creates order with given attributes" do
+      count = described_class.count
       item  = WhiplashApi::Item.create sku: "SOME-SKU-KEY", title: "Some Title"
-      attributes = valid_attributes.merge(order_items: [{item_id: item.id, quantity: 1}])
-      order = described_class.create attributes
+      attrs = valid_attributes.merge(order_items: [{item_id: item.id, quantity: 1}])
+      order = described_class.create attrs
 
       expect(order).to be_persisted
       expect(order.order_items.map(&:item_id)).to include item.id
-      expect(described_class.all).to include(order)
+      expect(described_class.count).to eq(count + 1)
     end
 
     xit "does not create order without required fields" do
+      count = described_class.count
       valid_attributes.each_pair do |field, value|
-        order = described_class.create valid_attributes.merge(field => nil)
-        expect(order).not_to be_persisted
-        expect(described_class.all).not_to include(order)
+        expect {
+          described_class.create valid_attributes.merge(field => nil)
+        }.to raise_error(WhiplashApi::Error)
       end
     end
   end
