@@ -76,11 +76,6 @@ describe WhiplashApi::Item do
     end
   end
 
-  # NOTE: In my testing, I wasn't able to find any item with an originator_id
-  # specified (inside testing environment). Further, when an item is saved by
-  # specifying the `originator_id`, `originator_id` is not returned in
-  # subsequent requests. Probably, the API service is not returning
-  # `originator_id` for the items.
   describe ".originator" do
     it "can find an Item using its Originator ID" do
       item = described_class.create sku: @sku, title: "EEE", originator_id: "ZZZ123"
@@ -88,8 +83,21 @@ describe WhiplashApi::Item do
     end
   end
   describe ".find_or_create_by_originator_id" do
-    xit "can find item(s) with given Originator ID, if it exists"
-    xit "creates item with given attributes and a specific Originator ID, if it does not exist"
+    it "can find item(s) with given Originator ID, if it exists" do
+      item = described_class.create sku: @sku, originator_id: "ZZZ1234", title: "EEE"
+      expect(described_class).not_to receive(:create)
+      expect(described_class.find_or_create_by_originator_id("ZZZ1234", sku: @sku)).to eq item
+    end
+    it "creates item with given attributes and a specific Originator ID, if it does not exist" do
+      @oid = "RAND123412"
+      expect(described_class).to receive(:originator).with(@oid).twice.and_call_original
+      expect(described_class).to receive(:create).once.and_call_original
+
+      item = described_class.find_or_create_by_originator_id @oid, sku: @sku, title: "AAA"
+      expect(item).to be_persisted
+      expect(described_class.sku(@sku)).to include(item)
+      described_class.find_or_create_by_originator_id @oid, sku: @sku, title: "AAA"
+    end
   end
 
   describe ".update" do
