@@ -1,6 +1,8 @@
 Whiplash API V1 - Ruby Client
 ================================
 
+[![Build Status](https://travis-ci.org/nikhgupta/whiplash_api.svg?branch=master)](https://travis-ci.org/nikhgupta/whiplash_api)
+
 This library provides a wrapper around the [Whiplash][whiplash] [Merchandising REST API][api] for use within Ruby apps or via the console.
 
 ### Note

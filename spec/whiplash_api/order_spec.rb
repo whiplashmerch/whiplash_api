@@ -11,7 +11,7 @@ describe WhiplashApi::Order do
   }}
 
   before(:each) do
-    @oid = Digest::MD5.hexdigest(Time.now.to_s)
+    @oid = Digest::MD5.hexdigest SecureRandom.base64
   end
 
   describe ".count" do

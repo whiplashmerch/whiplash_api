@@ -69,13 +69,15 @@ describe WhiplashApi::Item do
 
   describe ".find_or_create_by_sku" do
     it "can find item(s) with given SKU, if it exists" do
-      item = described_class.create sku: @sku, title: "AAA"
+      @sku = "SOME-SKU-KEY-2"
+      item  = described_class.create sku: @sku, title: "AAA"
       expect(described_class).not_to receive(:create)
-      expect(described_class.find_or_create_by_sku(@sku, title: "AAA")).to eq item
+      found = described_class.find_or_create_by_sku(@sku, title: "AAA")
+      expect(found.id).to eq item.id
     end
 
     it "creates item with given attributes and a specific SKU, if it does not exist" do
-      @sku = "SOME-SKU-KEY-2"
+      @sku = "SOME-SKU-KEY-3"
       expect(described_class).to receive(:first_by_sku).with(@sku).twice.and_call_original
       expect(described_class).to receive(:create).once.and_call_original
 
@@ -112,7 +114,7 @@ describe WhiplashApi::Item do
 
   describe ".update" do
     it "updates the item with the given SKU" do
-      @sku = "SOME-SKU-KEY-3"
+      @sku = "SOME-SKU-KEY-4"
       item = described_class.create sku: @sku, title: "AAA"
       described_class.update(sku: @sku, title: "BBB")
       expect(item.reload.title).to eq "AAA"

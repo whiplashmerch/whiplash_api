@@ -12,7 +12,8 @@ module WhiplashApi
   module TestHelpers
     def self.teardown!
       # remove all created items
-      items = %w{SOME-SKU-KEY SOME-SKU-KEY-2 SOME-SKU-KEY-3}.map do |sku|
+      skus = %w{SOME-SKU-KEY SOME-SKU-KEY-2 SOME-SKU-KEY-3 SOME-SKU-KEY-4}
+      skus.map do |sku|
         WhiplashApi::Item.sku(sku) rescue []
       end.flatten.each(&:destroy)
 
