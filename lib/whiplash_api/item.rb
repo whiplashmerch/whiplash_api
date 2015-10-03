@@ -1,6 +1,10 @@
 module WhiplashApi
   class Item < Base
     class << self
+      def count(args={})
+        self.get(:count, args)
+      end
+
       def sku(sku, args={})
         self.get(:sku, { sku: sku }.merge(args)).map{ |item| self.new(item) }
       end

@@ -4,17 +4,27 @@ describe WhiplashApi::Item do
   before :each do
     @sku = "SOME-SKU-KEY"
   end
+
+  describe ".count" do
+    it "counts the number of items (with filtering) in the customer's account" do
+      expect(described_class.count).to be_a(Integer)
+      expect(described_class.count(created_at_min: 4.hours.since)).to eq 0
+    end
+  end
+
   describe ".create" do
     it "creates item with given attributes" do
-      item = described_class.create sku: @sku, title: "Some Product Title"
+      count = described_class.count
+      item  = described_class.create sku: @sku, title: "Some Product Title"
       expect(item).to be_persisted
-      expect(described_class.all).to include(item)
+      expect(described_class.count).to eq(count + 1)
     end
 
     xit "does not create item without a title" do
-      item = described_class.create sku: @sku, title: nil
+      count = described_class.count
+      item  = described_class.create sku: @sku, title: nil
       expect(item).not_to be_persisted
-      expect(described_class.all).not_to include(item)
+      expect(described_class.count).to eq count
     end
   end
 
@@ -26,9 +36,9 @@ describe WhiplashApi::Item do
 
     it "allows filtering of listing using parameters" do
       item = described_class.create sku: @sku, title: "BBB"
-      expect(described_class.all(params: {since_id: item.id}).count).to eq 0
+      expect(described_class.count(since_id: item.id)).to eq 0
       described_class.create sku: @sku, title: "CCC"
-      expect(described_class.all(params: {since_id: item.id}).count).to eq 1
+      expect(described_class.count(since_id: item.id)).to eq 1
     end
   end
 
