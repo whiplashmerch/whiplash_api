@@ -137,10 +137,8 @@ describe WhiplashApi::Item do
     it "finds the latest item with the given SKU" do
       described_class.create sku: @sku, title: "AAA"
       described_class.create sku: @sku, title: "BBB"
-      items = [described_class.first_by_sku(@sku)].flatten
-
-      expect(items.count).to eq 1
-      expect(items.first.title).to eq "BBB"
+      item = described_class.first_by_sku(@sku)
+      expect(item).to be_a(described_class)
     end
   end
 
