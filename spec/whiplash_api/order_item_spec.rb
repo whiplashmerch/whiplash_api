@@ -15,7 +15,7 @@ describe WhiplashApi::OrderItem do
   end
 
   before(:each) do
-    @oid = Digest::MD5.hexdigest(Time.now.to_s)
+    @oid = Digest::MD5.hexdigest SecureRandom.base64
   end
 
   def test_order_items
@@ -65,6 +65,29 @@ describe WhiplashApi::OrderItem do
         quantity: 1, originator_id: @oid, item_id:  @item.id, order_id: @order.id
       )
       expect(described_class.originator(@oid)).to eq order_item
+    end
+  end
+
+  describe ".find_or_create_by_originator_id" do
+    it "can find order item(s) with given Originator ID, if it exists" do
+      order_item = described_class.create(
+        quantity: 1, originator_id: @oid, item_id:  @item.id, order_id: @order.id
+      )
+
+      expect(described_class).not_to receive(:create)
+      expect(described_class.find_or_create_by_originator_id(@oid)).to eq order_item
+    end
+
+    it "creates item with given attributes and a specific Originator ID, if it does not exist" do
+      expect(described_class).to receive(:originator).twice.and_call_original
+      expect(described_class).to receive(:create).once.and_call_original
+
+      order_item = described_class.find_or_create_by_originator_id @oid, {
+        quantity: 1, item_id:  @item.id, order_id: @order.id
+      }
+      expect(order_item).to be_persisted
+      expect(test_order_items).to include(order_item)
+      described_class.find_or_create_by_originator_id @oid
     end
   end
 

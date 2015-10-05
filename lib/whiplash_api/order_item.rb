@@ -19,7 +19,7 @@ module WhiplashApi
 
       def originator(id, args={})
         self.collection_name = "order_items/originator"
-        order = self.find(id, args)
+        order = self.find(id, args) rescue nil
         self.collection_name = "order_items"
         order
       end
