@@ -17,12 +17,6 @@ module WhiplashApi
         super(scope, options)
       end
 
-      # def create(args={})
-      #   required! args, "%s is required for creating the shipnotice item.",
-      #     "Shipnotice ID", "Item ID", "Quantity"
-      #   super
-      # end
-
       def update(id, args={})
         shipnotice_item = self.find(id)
 

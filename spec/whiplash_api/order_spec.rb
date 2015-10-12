@@ -145,4 +145,21 @@ describe WhiplashApi::Order do
     order.uncancel
     expect(order.reload).to be_processing
   end
+
+  it "allows pausing, resuming, cancelling or uncancelling of orders at class level" do
+    order = described_class.create originator_id: @oid, shipping_name: "AAA"
+    expect(order).to be_processing
+
+    described_class.pause(order.id)
+    expect(order.reload).to be_paused
+
+    described_class.release(order.id)
+    expect(order.reload).to be_processing
+
+    described_class.cancel(order.id)
+    expect(order.reload).to be_cancelled
+
+    described_class.uncancel(order.id)
+    expect(order.reload).to be_processing
+  end
 end

@@ -35,19 +35,19 @@ module WhiplashApi
       end
 
       def pause(id, args={})
-        self.find(id, args).pause
+        self.put("#{id}/pause")
       end
 
       def release(id, args={})
-        self.find(id, args).release
+        self.put("#{id}/release")
       end
 
       def cancel(id, args={})
-        self.find(id, args).cancel
+        self.put("#{id}/cancel")
       end
 
       def uncancel(id, args={})
-        self.find(id, args).uncancel
+        self.put("#{id}/uncancel")
       end
 
       private
