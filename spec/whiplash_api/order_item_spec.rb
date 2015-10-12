@@ -108,23 +108,7 @@ describe WhiplashApi::OrderItem do
       order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
       expect {
         described_class.update(order_item.id, order_id: 999999)
-      }.to raise_error(WhiplashApi::RecordNotFound).with_message("No such order found to switch to.")
-    end
-
-    it "raises error when updating order item for order which has already been shipped" do
-      order = WhiplashApi::Order.create(
-        email: "user@example.com",
-        shipping_name: "Test Suite :: Name",
-        shipping_address_1: "Test Suite :: Address",
-        shipping_city: "Test Suite :: City",
-        shipping_zip: 12345,
-        shipping_country: "TZ"
-      )
-      order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
-      allow_any_instance_of(WhiplashApi::Order).to receive(:status).and_return(300)
-      expect {
-        described_class.update(order_item.id, order_id: order.id)
-      }.to raise_error(WhiplashApi::Error).with_message("You can only switch to unshipped orders.")
+      }.to raise_error(WhiplashApi::RecordNotFound)
     end
   end
 
@@ -134,15 +118,6 @@ describe WhiplashApi::OrderItem do
       expect(test_order_items).to include(order_item)
       described_class.delete(order_item.id)
       expect(test_order_items).not_to include(order_item)
-    end
-
-    it "raises error when trying to delete an order item for an order which has already been processed" do
-      order_item = described_class.create(quantity: 1, item_id:  @item.id, order_id: @order.id)
-      allow_any_instance_of(WhiplashApi::Order).to receive(:status).and_return(120)
-      expect(test_order_items).to include(order_item)
-      expect {
-        described_class.delete(order_item.id)
-      }.to raise_error(WhiplashApi::Error).with_message("You can not delete order items for orders which have already been processed.")
     end
   end
 end

@@ -18,28 +18,16 @@ module WhiplashApi
       end
 
       def update(id, args={})
-        shipnotice_item = self.find(id)
-
-        if args[:shipnotice_id].present?
-          notice = WhiplashApi::Shipnotice.find(args[:shipnotice_id])
-        else
-          notice = WhiplashApi::Shipnotice.find(shipnotice_item.shipnotice_id)
-        end
-
-        raise Error, "You can not update shipnotice items for shipnotices that have arrived." if notice.received?
-        shipnotice_item.update_attributes(args) ? shipnotice_item : false
+        response = self.put(id, {}, args.to_json)
+        response.code.to_i >= 200 && response.code.to_i < 300
       rescue WhiplashApi::RecordNotFound
         raise RecordNotFound, "No shipnotice item found with given ID."
       end
 
-      def delete(id, args={})
-        snitem = self.find(id)
-        notice = WhiplashApi::Shipnotice.find(snitem.shipnotice_id)
-        if notice.received?
-          raise Error, "You can not delete shipnotice items for shipnotices which have arrived."
-        else
-          super
-        end
+      def delete(*args)
+        super
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No shipnotice item found with given ID."
       end
     end
 

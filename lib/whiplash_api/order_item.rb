@@ -29,29 +29,16 @@ module WhiplashApi
       end
 
       def update(id, args={})
-        order_item = self.find(id)
-
-        if args[:order_id].present?
-          order = WhiplashApi::Order.find(args[:order_id])
-        else
-          order = WhiplashApi::Order.find(order_item.order_id)
-        end
-
-        raise Error, "You can only switch to unshipped orders." unless order.unshipped?
-        order_item.update_attributes(args) ? order_item : false
+        response = self.put(id, {}, args.to_json)
+        response.code.to_i >= 200 && response.code.to_i < 300
       rescue WhiplashApi::RecordNotFound
-        message = order_item.present? ? "No such order found to switch to." : "No order item found with given ID."
-        raise RecordNotFound, message
+        raise RecordNotFound, "No order item found with given ID."
       end
 
-      def delete(id, args={})
-        order_item = self.find(id)
-        order = WhiplashApi::Order.find(order_item.order_id)
-        if order.unprocessed? || order.being_processed?
-          super
-        else
-          raise Error, "You can not delete order items for orders which have already been processed."
-        end
+      def delete(*args)
+        super
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No order item was found with given ID."
       end
     end
 

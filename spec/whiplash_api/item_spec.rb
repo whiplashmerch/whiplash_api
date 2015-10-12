@@ -24,12 +24,12 @@ describe WhiplashApi::Item do
       expect(described_class.count).to eq(count + 1)
     end
 
-    xit "does not create item without a title" do
-      count = described_class.count
-      expect{
-        described_class.create sku: @sku, title: nil
-      }.to raise_error(WhiplashApi::Error)
-    end
+    # xit "does not create item without a title" do
+    #   count = described_class.count
+    #   expect{
+    #     described_class.create sku: @sku, title: nil
+    #   }.to raise_error(WhiplashApi::Error)
+    # end
   end
 
   describe ".all" do

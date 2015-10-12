@@ -33,14 +33,14 @@ describe WhiplashApi::Order do
       expect(described_class.count).to eq(count + 1)
     end
 
-    xit "does not create order without required fields" do
-      count = described_class.count
-      valid_attributes.each_pair do |field, value|
-        expect {
-          described_class.create valid_attributes.merge(field => nil)
-        }.to raise_error(WhiplashApi::Error)
-      end
-    end
+    # xit "does not create order without required fields" do
+    #   count = described_class.count
+    #   valid_attributes.each_pair do |field, value|
+    #     expect {
+    #       described_class.create valid_attributes.merge(field => nil)
+    #     }.to raise_error(WhiplashApi::Error)
+    #   end
+    # end
   end
 
   describe ".all" do
@@ -102,48 +102,6 @@ describe WhiplashApi::Order do
         described_class.update(originator_id: @oid, shipping_name: "AAA")
       }.to raise_error(WhiplashApi::RecordNotFound).with_message("No order found with given Originator ID.")
     end
-
-    it "raises error when updating order which has already been shipped" do
-      order = described_class.create originator_id: @oid, shipping_name: "AAA"
-      allow_any_instance_of(described_class).to receive(:status).and_return(300)
-      expect {
-        described_class.update(originator_id: @oid, shipping_name: "BBB")
-      }.to raise_error(WhiplashApi::Error).with_message("Orders may only be updated before they have been shipped.")
-    end
-  end
-
-  it "allows pausing, resuming, cancelling or uncancelling of orders" do
-    order = described_class.create originator_id: @oid, shipping_name: "AAA"
-    expect(order).to be_processing
-
-    message = "Cannot release an order that has not been paused."
-    expect{order.release}.to raise_error(WhiplashApi::Error).with_message(message)
-
-    order.pause
-    expect(order.reload).to be_paused
-
-    order.release
-    expect(order.reload).to be_processing
-
-    # simulate shipping
-    allow_any_instance_of(described_class).to receive(:status).and_return 300
-    message = "Orders may only be paused before they have been shipped."
-    expect{order.pause}.to raise_error(WhiplashApi::Error).with_message(message)
-
-    message = "Orders may only be cancelled before they have been shipped."
-    expect{order.cancel}.to raise_error(WhiplashApi::Error).with_message(message)
-
-    # back to actual status of the order
-    allow_any_instance_of(described_class).to receive(:status).and_call_original
-
-    message = "Cannot uncancel an order that has not been cancelled."
-    expect{order.uncancel}.to raise_error(WhiplashApi::Error).with_message(message)
-
-    order.cancel
-    expect(order.reload).to be_cancelled
-
-    order.uncancel
-    expect(order.reload).to be_processing
   end
 
   it "allows pausing, resuming, cancelling or uncancelling of orders at class level" do
@@ -161,5 +119,8 @@ describe WhiplashApi::Order do
 
     described_class.uncancel(order.id)
     expect(order.reload).to be_processing
+
+    order.cancel # test instance level status modifications
+    expect(order.reload).to be_cancelled
   end
 end

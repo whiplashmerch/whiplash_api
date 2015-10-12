@@ -32,12 +32,12 @@ module WhiplashApi
 end
 
 RSpec.configure do |config|
-  config.before(:suite) do
-    puts "Removing/cancelling resources that may interfere with current tests..."
-    puts "This may take a while..."
+  # config.before(:suite) do
+  #   puts "Removing/cancelling resources that may interfere with current tests..."
+  #   puts "This may take a while..."
 
-    WhiplashApi::TestHelpers.teardown!
-  end
+  #   WhiplashApi::TestHelpers.teardown!
+  # end
 
   config.after(:suite) do
     puts

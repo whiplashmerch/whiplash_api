@@ -21,23 +21,14 @@ module WhiplashApi
       end
 
       def update(id, args={})
-        notice = self.find(id)
-        if notice.received?
-          raise Error, "Shipment notices may only be updated before they have been received."
-        else
-          notice.update_attributes(args) ? notice : false
-        end
+        response = self.put(id, {}, args.to_json)
+        response.code.to_i >= 200 && response.code.to_i < 300
       rescue WhiplashApi::RecordNotFound
         raise RecordNotFound, "No Shipment notice found with given ID."
       end
 
-      def delete(id, args={})
-        notice = self.find(id)
-        if notice.received?
-          raise Error, "Shipment notices may only be deleted before they have been received."
-        else
-          super
-        end
+      def delete(*args)
+        super
       rescue WhiplashApi::RecordNotFound
         raise RecordNotFound, "No Shipment notice found with given ID."
       end

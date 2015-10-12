@@ -43,6 +43,8 @@ require 'whiplash_api'
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
+An error will be raised if no API key is provided.
+
 You'll likely want to start by testing in the Sandbox:
 
 ```

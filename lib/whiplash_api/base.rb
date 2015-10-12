@@ -14,6 +14,8 @@ module WhiplashApi
       # Override the connection that ActiveResource uses, so that we can add our
       # own error messages for the weird cases when API returns 422 error.
       def connection(refresh = false)
+        message = "You must set a valid API Key. Current: #{headers['X-API-KEY'].inspect}"
+        raise WhiplashApi::Error, message if headers['X-API-KEY'].blank?
         @connection = WhiplashApi::Connection.new(site, format) if refresh || @connection.nil?
         super
       end

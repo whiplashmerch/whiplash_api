@@ -26,12 +26,7 @@ module WhiplashApi
       def update(args={})
         order = self.originator(args[:originator_id])
         raise RecordNotFound, "No order found with given Originator ID." unless order
-
-        if order.unshipped?
-          order.update_attributes(args) ? order : false
-        else
-          raise Error, "Orders may only be updated before they have been shipped."
-        end
+        order.update_attributes(args) ? order : false
       end
 
       def pause(id, args={})
@@ -104,35 +99,39 @@ module WhiplashApi
     alias :processing? :being_processed?
 
     def pause
-      if unshipped?
-        self.put(:pause)
-      else
-        raise Error, "Orders may only be paused before they have been shipped."
-      end
+      self.put(:pause)
     end
 
     def release
-      if paused?
-        self.put(:release)
-      else
-        raise Error, "Cannot release an order that has not been paused."
-      end
+      self.put(:release)
     end
 
     def cancel
-      if unshipped?
-        self.put(:cancel)
-      else
-        raise Error, "Orders may only be cancelled before they have been shipped."
-      end
+      self.put(:cancel)
     end
 
     def uncancel
-      if cancelled?
-        self.put(:uncancel)
-      else
-        raise Error, "Cannot uncancel an order that has not been cancelled."
-      end
+      self.put(:uncancel)
     end
+
+    # def pause
+    #   self.put(:pause) and return if unshipped?
+    #   raise Error, "Orders may only be paused before they have been shipped."
+    # end
+
+    # def release
+    #   self.put(:release) and return if paused?
+    #   raise Error, "Cannot release an order that has not been paused."
+    # end
+
+    # def cancel
+    #   self.put(:cancel) and return if unshipped?
+    #   raise Error, "Orders may only be cancelled before they have been shipped."
+    # end
+
+    # def uncancel
+    #   self.put(:uncancel) and return if cancelled?
+    #   raise Error, "Cannot uncancel an order that has not been cancelled."
+    # end
   end
 end

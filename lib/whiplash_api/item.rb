@@ -33,8 +33,13 @@ module WhiplashApi
       def update(args={})
         item = self.originator(args[:originator_id])
         raise RecordNotFound, "No item was found with given Originator ID." unless item
-
         item.update_attributes(args) ? item : nil
+      end
+
+      def delete(*args)
+        super
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No Item was found with given ID."
       end
 
       # additional useful methods:

@@ -27,13 +27,13 @@ describe WhiplashApi::Shipnotice do
       expect(notice.shipnotice_items.map(&:item_id)).to include @item.id
     end
 
-    xit "does not create shipment notice without required fields" do
-      @valid_attributes.each_pair do |field, value|
-        expect{
-          described_class.create @valid_attributes.merge(field => nil)
-        }.to raise_error(WhiplashApi::Error)
-      end
-    end
+    # xit "does not create shipment notice without required fields" do
+    #   @valid_attributes.each_pair do |field, value|
+    #     expect{
+    #       described_class.create @valid_attributes.merge(field => nil)
+    #     }.to raise_error(WhiplashApi::Error)
+    #   end
+    # end
   end
 
   describe ".all" do
@@ -69,14 +69,6 @@ describe WhiplashApi::Shipnotice do
         described_class.update(999999, warehouse_id: 2)
       }.to raise_error(WhiplashApi::Error).with_message("No Shipment notice found with given ID.")
     end
-
-    it "raises error when updating shipment notice which has already been received" do
-      notice = described_class.create @valid_attributes
-      allow_any_instance_of(described_class).to receive(:status).and_return(150)
-      expect {
-        described_class.update(notice.id, warehouse_id: 2)
-      }.to raise_error(WhiplashApi::Error).with_message("Shipment notices may only be updated before they have been received.")
-    end
   end
 
   describe ".delete" do
@@ -91,14 +83,6 @@ describe WhiplashApi::Shipnotice do
       expect {
         described_class.delete(999999)
       }.to raise_error(WhiplashApi::Error).with_message("No Shipment notice found with given ID.")
-    end
-
-    it "raises error when trying to delete a shipment notice which has already been received" do
-      notice = described_class.create @valid_attributes
-      allow_any_instance_of(described_class).to receive(:status).and_return(150)
-      expect {
-        described_class.delete(notice.id)
-      }.to raise_error(WhiplashApi::Error).with_message("Shipment notices may only be deleted before they have been received.")
     end
   end
 end
