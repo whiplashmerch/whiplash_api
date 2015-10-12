@@ -5,6 +5,10 @@ describe WhiplashApi::Item do
     @sku = "SOME-SKU-KEY"
   end
 
+  before(:each) do
+    @oid = Digest::MD5.hexdigest SecureRandom.base64
+  end
+
   describe ".count" do
     it "counts the number of items (with filtering) in the customer's account" do
       expect(described_class.count).to be_a(Integer)
@@ -113,25 +117,16 @@ describe WhiplashApi::Item do
   end
 
   describe ".update" do
-    it "updates the item with the given SKU" do
-      @sku = "SOME-SKU-KEY-4"
-      item = described_class.create sku: @sku, title: "AAA"
-      described_class.update(sku: @sku, title: "BBB")
-      expect(item.reload.title).to eq "AAA"
+    it "updates the item with the given originator ID" do
+      item = described_class.find_or_create_by_originator_id @oid, sku: @sku, title: "AAA"
+      data = described_class.update(originator_id: @oid, title: "BBB")
+      expect(item.reload.title).to eq "BBB"
     end
 
-    it "raises error if no items are found with the given SKU" do
+    it "raises error if no items are found with the given Originator ID" do
       expect {
-        described_class.update(sku: "SOME-SKU-KEY-THAT-DOES-NOT-EXIST", title: "BBB")
-      }.to raise_error(WhiplashApi::Error).with_message("No item was found with given SKU.")
-    end
-
-    it "raises error if multiple items are found with the given SKU" do
-      described_class.create sku: @sku, title: "AAA"
-      described_class.create sku: @sku, title: "BBB"
-      expect {
-        described_class.update(sku: @sku, title: "BBB")
-      }.to raise_error(WhiplashApi::Error).with_message("Multiple items were found with given SKU.")
+        described_class.update(originator_id: @oid, title: "BBB")
+      }.to raise_error(WhiplashApi::Error).with_message("No item was found with given Originator ID.")
     end
   end
 

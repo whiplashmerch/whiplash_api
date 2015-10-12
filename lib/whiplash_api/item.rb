@@ -31,12 +31,10 @@ module WhiplashApi
       end
 
       def update(args={})
-        items = self.sku(args.delete(:sku))
-        raise Error, "No item was found with given SKU." if items.blank?
-        raise Error, "Multiple items were found with given SKU." if items.count > 1
+        item = self.originator(args[:originator_id])
+        raise RecordNotFound, "No item was found with given Originator ID." unless item
 
-        item = items.first
-        item.update_attributes(args) ? item : false
+        item.update_attributes(args) ? item : nil
       end
 
       # additional useful methods:
