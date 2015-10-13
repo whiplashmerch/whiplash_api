@@ -91,7 +91,12 @@ describe WhiplashApi::Item do
       described_class.find_or_create_by_sku @sku, title: "AAA"
     end
   end
-
+  describe ".group" do
+    it "can find all Items belonging to given Group ID" do
+      item = described_class.create sku: @sku, title: "EEE", group_id: "ZZZ123"
+      expect(described_class.group("ZZZ123")).to include item
+    end
+  end
   describe ".originator" do
     it "can find an Item using its Originator ID" do
       item = described_class.create sku: @sku, title: "EEE", originator_id: "ZZZ123"

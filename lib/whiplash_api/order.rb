@@ -13,10 +13,7 @@ module WhiplashApi
       end
 
       def originator(id, args={})
-        self.collection_name = "orders/originator"
-        order = self.find(id, args) rescue nil
-        self.collection_name = "orders"
-        order
+        sanitize_as_resource self.get("originator/#{id}", args)
       end
 
       def find_or_create_by_originator_id(id, args={})

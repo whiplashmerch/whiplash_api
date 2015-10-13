@@ -15,7 +15,7 @@ module WhiplashApi
       skus = %w{SOME-SKU-KEY SOME-SKU-KEY-2 SOME-SKU-KEY-3 SOME-SKU-KEY-4}
       skus.map do |sku|
         WhiplashApi::Item.sku(sku) rescue []
-      end.flatten.each(&:destroy)
+      end.flatten.compact.each(&:destroy)
 
       # cancel all created orders
       orders = WhiplashApi::Order.all(params: { shipping_country: "TS" }) rescue []

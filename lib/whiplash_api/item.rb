@@ -6,14 +6,15 @@ module WhiplashApi
       end
 
       def sku(sku, args={})
-        self.get(:sku, { sku: sku }.merge(args)).map{ |item| self.new(item) }
+        sanitize_as_resource self.get(:sku, { sku: sku }.merge(args))
+      end
+
+      def group(id, args={})
+        sanitize_as_resource self.get("group/#{id}", args)
       end
 
       def originator(id, args={})
-        self.collection_name = "items/originator"
-        item = self.find(id, args) rescue nil
-        self.collection_name = "items"
-        item
+        sanitize_as_resource self.get("originator/#{id}", args)
       end
 
       def find_or_create(id, args={})

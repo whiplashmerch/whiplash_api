@@ -9,6 +9,11 @@ module WhiplashApi
     class << self
       def testing!
         self.site = 'http://testing.whiplashmerch.com/api/'
+
+        ActiveSupport::Notifications.subscribe("request.active_resource") do |*args|
+          puts "[ActiveResource] Request:  #{args.last[:request_uri]}"
+          puts "[ActiveResource] Response: #{args.last[:result].body}"
+        end if ENV['DEBUG'].present?
       end
 
       # Override the connection that ActiveResource uses, so that we can add our
@@ -26,6 +31,19 @@ module WhiplashApi
 
       def api_version=(v)
         headers['X-API-VERSION'] = v
+      end
+
+      protected
+
+      def sanitize_as_resource(collection)
+        return collection if collection.blank?
+        as_array   = collection.is_a?(Array)
+        collection = [collection].flatten.map do |resource|
+          resource = self.new(resource)
+          resource.instance_variable_set("@persisted", true)
+          resource
+        end
+        as_array ? collection : collection.first
       end
     end
   end
