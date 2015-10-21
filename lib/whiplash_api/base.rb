@@ -1,54 +1,50 @@
-module WhiplashAPI
-
-  # Example Class Method
-  # def reserved(*names)
-  #   class_variable_set(:@@reserved, names.collect{|x| x.to_s})
-  # end
+module WhiplashApi
+  class Error < ::StandardError; end
+  class RecordNotFound < Error; end
 
   class Base < ActiveResource::Base
-    extend WhiplashAPI
-    
-    self.site = 'https://www.whiplashmerch.com/api/'
+    self.site   = 'https://www.whiplashmerch.com/api/'
     self.format = :json
-    
-    # Thanks to Brandon Keepers for this little nugget:
-    # http://opensoul.org/blog/archives/2010/02/16/active-resource-in-practice/
+
     class << self
-      # If headers are not defined in a given subclass, then obtain
-      # headers from the superclass.
-      def headers
-        if defined?(@headers)
-          @headers
-        elsif superclass != Object && superclass.headers
-          superclass.headers
-        else
-          @headers ||= {}
-        end
+      def testing!
+        self.site = 'http://testing.whiplashmerch.com/api/'
+
+        ActiveSupport::Notifications.subscribe("request.active_resource") do |*args|
+          puts "[ActiveResource] Request:  #{args.last[:request_uri]}"
+          puts "[ActiveResource] Response: #{args.last[:result].body}"
+        end if ENV['DEBUG'].present?
       end
-      
+
+      # Override the connection that ActiveResource uses, so that we can add our
+      # own error messages for the weird cases when API returns 422 error.
+      def connection(refresh = false)
+        message = "You must set a valid API Key. Current: #{headers['X-API-KEY'].inspect}"
+        raise WhiplashApi::Error, message if headers['X-API-KEY'].blank?
+        @connection = WhiplashApi::Connection.new(site, format) if refresh || @connection.nil?
+        super
+      end
+
       def api_key=(api_key)
         headers['X-API-KEY'] = api_key
       end
-      
+
       def api_version=(v)
         headers['X-API-VERSION'] = v
       end
-      
-      def local=(v)
-        self.site = 'http://localhost:3000/api/' if v
-      end
-      
-      def test=(v)
-        self.site = 'http://testing.whiplashmerch.com/api/' if v
-      end
-    
-    end
-    
-    # Example Instance Method
-    # def class_name
-    #   self.class.name.split('::').last.downcase
-    # end
-        
-  end
 
+      protected
+
+      def sanitize_as_resource(collection)
+        return collection if collection.blank?
+        as_array   = collection.is_a?(Array)
+        collection = [collection].flatten.map do |resource|
+          resource = self.new(resource)
+          resource.instance_variable_set("@persisted", true)
+          resource
+        end
+        as_array ? collection : collection.first
+      end
+    end
+  end
 end

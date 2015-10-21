@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require "whiplash_api"
+require "whiplash_api/cli"
+
+WhiplashApi::CLI.start ARGV
