@@ -25,12 +25,17 @@ module WhiplashApi
         super
       end
 
+      def headers
+        Thread.current["active.resource.currentthread.headers"] = {} if Thread.current["active.resource.currentthread.headers"].blank?
+        Thread.current["active.resource.currentthread.headers"]
+      end
+
       def api_key=(api_key)
         headers['X-API-KEY'] = api_key
       end
 
-      def api_version=(v)
-        headers['X-API-VERSION'] = v
+      def api_version=(v = nil)
+        headers['X-API-VERSION'] = v || 1
       end
 
       protected

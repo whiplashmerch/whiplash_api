@@ -11,6 +11,7 @@ WhiplashApi::Base.api_key = ENV['WL_KEY']
 module WhiplashApi
   module TestHelpers
     def self.teardown!
+      return if ENV['NO_TEARDOWN'].present?
       # remove all created items
       skus = %w{SOME-SKU-KEY SOME-SKU-KEY-2 SOME-SKU-KEY-3 SOME-SKU-KEY-4}
       skus.map do |sku|

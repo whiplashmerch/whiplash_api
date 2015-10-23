@@ -92,6 +92,8 @@ You can run the tests on the current version of this gem, by cloning it locally,
 WL_KEY=Hc2BHTn3bcrwyPooyYTP rspec spec
 ```
 
+You can skip teardown for the tests (where the test suite removes/deleted instances of created resources on the testing server) by setting an environment variable `NO_TEARDOWN`.
+
 Note that, testing can take a long time, since tests are performed directly on the testing server, and no mocks are used. This is to ensure that the API conforms to the tests, at the same time.
 
 ### Copyright
