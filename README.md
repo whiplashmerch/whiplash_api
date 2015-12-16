@@ -43,10 +43,10 @@ require 'whiplash_api'
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
-API Key is OAuth key for the user if using API v2 and above. An error will be raised if no API key is provided. By default, API v2 is used. If you want to, specifically, use API v1, please call `.api_version` before setting the API key:
+API Key is OAuth key for the user if using API v2 and above. An error will be raised if no API key is provided. By default, API v1 is used. If you want to, specifically, use API v2, please call `.api_version` before setting the OAuth token:
 
 ```
-WhiplashAPI::Base.api_version = 1
+WhiplashAPI::Base.api_version = 2
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
@@ -98,6 +98,7 @@ locally. Tests require setting up the following environment variables:
 WL_API_KEY=7z5pCqMJRqpu1Hmbkn8o # for testing if API v1 support
 WL_OAUTH_KEY=23447e1eaeddf2d1c4af4c9cf88524af2863cb1f72d500dd9328b34735a3f3b0 # for testing if API v2 support
 WL_API_VERSION=2 # By default, API v2 is used for all tests, but can be toggled using this.
+WL_CUSTOMER_ID=242 # Use the given Customer ID for API v2
 rspec spec
 ```
 

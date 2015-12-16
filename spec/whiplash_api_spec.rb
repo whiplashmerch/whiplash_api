@@ -25,10 +25,13 @@ describe WhiplashApi do
   end
 
   context "when API v1" do
-    skip("Environment variable WL_API_KEY must be set!") unless ENV['WL_API_KEY']
-    it "allows connecting to the API" do
+    before(:each) do
+      skip("Environment variable WL_API_KEY must be set!") unless ENV['WL_API_KEY']
+      WhiplashApi::Base.reset_headers!
       WhiplashApi::Base.api_version = 1
       WhiplashApi::Base.api_key = ENV['WL_API_KEY']
+    end
+    it "allows connecting to the API" do
       expect(WhiplashApi::Item.count).to be > 0
     end
 
@@ -48,14 +51,16 @@ describe WhiplashApi do
   end
 
   context "when API v2" do
-    skip("Environment variable WL_OAUTH_KEY must be set!") unless ENV['WL_OAUTH_KEY']
-    it "allows connecting to the API" do
+    before(:each) do
+      skip("Environment variable WL_OAUTH_KEY must be set!") unless ENV['WL_OAUTH_KEY']
+      WhiplashApi::Base.reset_headers!
       WhiplashApi::Base.api_version = 2
       WhiplashApi::Base.api_key = ENV['WL_OAUTH_KEY']
+      WhiplashApi::Base.customer_id = ENV['WL_CUSTOMER_ID'] if ENV['WL_CUSTOMER_ID']
+    end
+    it "allows connecting to the API" do
       expect(WhiplashApi::Item.count).to be > 0
     end
-    xit "supports connecting with a targetted customer ID"
-
     it "does not mix api key for different classes together" do
       range    = (1..10)
       expected = range.map do |val|

@@ -2,16 +2,6 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'pry'
 require 'whiplash_api'
 
-WhiplashApi::Base.testing!
-
-version = (ENV['WL_API_VERSION'] || WhiplashApi::API_VERSION).to_i
-raise "Please, set a valid API version" if version == 0
-raise "Please, set environment variable WL_API_KEY" if version == 1 && !ENV['WL_API_KEY']
-raise "Please, set environment variable WL_OAUTH_KEY" if version > 1 && !ENV['WL_OAUTH_KEY']
-
-WhiplashApi::Base.api_version = version
-WhiplashApi::Base.api_key = version == 1 ? ENV['WL_API_KEY'] : ENV['WL_OAUTH_KEY']
-
 module WhiplashApi
   module TestHelpers
     def self.teardown!
@@ -37,12 +27,15 @@ module WhiplashApi
 end
 
 RSpec.configure do |config|
-  # config.before(:suite) do
-  #   puts "Removing/cancelling resources that may interfere with current tests..."
-  #   puts "This may take a while..."
-
-  #   WhiplashApi::TestHelpers.teardown!
-  # end
+  config.before(:each) do
+    version = (ENV['WL_API_VERSION'] || WhiplashApi::DEFAULT_API_VERSION).to_i
+    raise "Please, set a valid API version" if version == 0
+    raise "Please, set environment variable WL_API_KEY" if version == 1 && !ENV['WL_API_KEY']
+    raise "Please, set environment variable WL_OAUTH_KEY" if version > 1 && !ENV['WL_OAUTH_KEY']
+    WhiplashApi::Base.testing!
+    WhiplashApi::Base.api_version = version
+    WhiplashApi::Base.api_key = version == 1 ? ENV['WL_API_KEY'] : ENV['WL_OAUTH_KEY']
+  end
 
   config.after(:suite) do
     puts

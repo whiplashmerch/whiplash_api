@@ -4,7 +4,7 @@ module WhiplashApi
 
     def request(*arguments)
       super
-    rescue ActiveResource::ResourceInvalid, ActiveResource::UnauthorizedAccess => e
+    rescue ActiveResource::ResourceInvalid, ActiveResource::ForbiddenAccess, ActiveResource::UnauthorizedAccess => e
       data = JSON.parse e.response.body
       case
       when data['error'].present? && data['error'].downcase =~ /record.*not.*found/
