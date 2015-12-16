@@ -2,11 +2,15 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'pry'
 require 'whiplash_api'
 
-message = "You must set environment variable WL_KEY for specifying the test API key."
-raise WhiplashApi::Error, message unless ENV['WL_KEY'].present?
-
 WhiplashApi::Base.testing!
-WhiplashApi::Base.api_key = ENV['WL_KEY']
+
+version = (ENV['WL_API_VERSION'] || WhiplashApi::API_VERSION).to_i
+raise "Please, set a valid API version" if version == 0
+raise "Please, set environment variable WL_API_KEY" if version == 1 && !ENV['WL_API_KEY']
+raise "Please, set environment variable WL_OAUTH_KEY" if version > 1 && !ENV['WL_OAUTH_KEY']
+
+WhiplashApi::Base.api_version = version
+WhiplashApi::Base.api_key = version == 1 ? ENV['WL_API_KEY'] : ENV['WL_OAUTH_KEY']
 
 module WhiplashApi
   module TestHelpers
