@@ -6,8 +6,8 @@ require 'whiplash_api/version'
 Gem::Specification.new do |spec|
   spec.name          = "whiplash_api"
   spec.version       = WhiplashApi::VERSION
-  spec.authors       = ["Mark Dickson"]
-  spec.email         = ["mark@sitesteaders.com"]
+  spec.authors       = ["Mark Dickson", "Nikhil Gupta"]
+  spec.email         = ["mark@sitesteaders.com", "mestoic@gmail.com"]
 
   spec.summary       = %q{Ruby Gem for connecting to the Whiplash Merchandising API}
   spec.description   = %q{Ruby Gem for connecting to the Whiplash Merchandising API}
