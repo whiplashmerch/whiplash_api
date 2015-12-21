@@ -5,10 +5,6 @@ Whiplash API V1 - Ruby Client
 
 This library provides a wrapper around the [Whiplash][whiplash] [Merchandising REST API][api] for use within Ruby apps or via the console.
 
-### Note
-
-**If you are using a Rails app, the advised approach is to use ActiveResource. You can get started or gain inspiration from our [example Rails app][app]: **
-
 ### Requirements
 
 - Ruby 1.9.3+
@@ -16,9 +12,9 @@ This library provides a wrapper around the [Whiplash][whiplash] [Merchandising R
 - JSON
 - ActiveResource
 
-A valid API key is required to authenticate requests. You can find your API key on your customer account page.
+A valid API key (v1) or Oauth token (v2) is required to authenticate requests. You can find your API key on your customer account page. 
 
-You can, also, use the test API key `Hc2BHTn3bcrwyPooyYTP` to test this client.
+You can also use the test API key `Hc2BHTn3bcrwyPooyYTP` to test this client.
 
 ### Installation
 
@@ -42,13 +38,22 @@ require 'whiplash_api'
 
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
+An error will be raised if no API key is provided.
 
-API Key is OAuth key for the user if using API v2 and above. An error will be raised if no API key is provided. By default, API v1 is used. If you want to, specifically, use API v2, please call `.api_version` before setting the OAuth token:
+### API Versions
+
+The default Whiplash API is v1 and uses API keys. The v2 API uses Oauth, and is currently available in private beta. 
+
+Both API versions are fully supported by this gem. Unless specified, API v1 is used.
+
+NOTE: The API Key is your OAuth access token if you are using API v2. If you want to use API v2, call `.api_version` before setting the OAuth token:
 
 ```
 WhiplashAPI::Base.api_version = 2
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
+
+### Sandbox usage
 
 You'll likely want to start by testing in the Sandbox:
 
@@ -115,7 +120,7 @@ that the API conforms to the tests, at the same time.
 
 ### Copyright
 
-Copyright (c) 2012 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
+Copyright (c) 2015 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
 
 
   [whiplash]: https://www.whiplashmerch.com/
