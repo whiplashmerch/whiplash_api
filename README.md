@@ -43,7 +43,12 @@ require 'whiplash_api'
 WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
-An error will be raised if no API key is provided.
+API Key is OAuth key for the user if using API v2 and above. An error will be raised if no API key is provided. By default, API v1 is used. If you want to, specifically, use API v2, please call `.api_version` before setting the OAuth token:
+
+```
+WhiplashAPI::Base.api_version = 2
+WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
+```
 
 You'll likely want to start by testing in the Sandbox:
 
@@ -86,15 +91,27 @@ $ irb
 
 ### Testing Whiplash API Gem
 
-You can run the tests on the current version of this gem, by cloning it locally, and then, running:
+You can run the tests on the current version of this gem, by cloning it
+locally. Tests require setting up the following environment variables:
 
 ```
-WL_KEY=Hc2BHTn3bcrwyPooyYTP rspec spec
+WL_API_KEY=7z5pCqMJRqpu1Hmbkn8o # for testing if API v1 support
+WL_OAUTH_KEY=23447e1eaeddf2d1c4af4c9cf88524af2863cb1f72d500dd9328b34735a3f3b0 # for testing if API v2 support
+WL_API_VERSION=2 # By default, API v2 is used for all tests, but can be toggled using this.
+WL_CUSTOMER_ID=242 # Use the given Customer ID for API v2
+rspec spec
 ```
 
-You can skip teardown for the tests (where the test suite removes/deleted instances of created resources on the testing server) by setting an environment variable `NO_TEARDOWN`.
+You can skip checking support for API v1 by not setting the corresp. env
+variable.
 
-Note that, testing can take a long time, since tests are performed directly on the testing server, and no mocks are used. This is to ensure that the API conforms to the tests, at the same time.
+You can skip teardown for the tests (where the test suite
+removes/deleted instances of created resources on the testing server) by
+setting an environment variable `NO_TEARDOWN`.
+
+Note that, testing can take a long time, since tests are performed
+directly on the testing server, and no mocks are used. This is to ensure
+that the API conforms to the tests, at the same time.
 
 ### Copyright
 
