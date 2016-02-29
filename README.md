@@ -36,7 +36,7 @@ To use the API client in your Ruby code, provide the required credentials as fol
 require 'rubygems'
 require 'whiplash_api'
 
-WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
+WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 An error will be raised if no API key is provided.
 
@@ -49,8 +49,8 @@ Both API versions are fully supported by this gem. Unless specified, API v1 is u
 NOTE: The API Key is your OAuth access token if you are using API v2. If you want to use API v2, call `.api_version` before setting the OAuth token:
 
 ```
-WhiplashAPI::Base.api_version = 2
-WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
+WhiplashApi::Base.api_version = 2
+WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
 ### Sandbox usage
@@ -58,7 +58,7 @@ WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
 You'll likely want to start by testing in the Sandbox:
 
 ```
- WhiplashAPI::Base.testing!
+ WhiplashApi::Base.testing!
 ```
 
 You can, also, check a very basic implementation/example inside `exe/whiplash_api` file.
@@ -70,17 +70,17 @@ The API currently gives you access to all endpoints supported by [Whiplash][whip
 ```
 $ irb
 >
-> WhiplashAPI::Base.api_key = 'XXXXXXXXXXXXX'
+> WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 >
-> items = WhiplashAPI::Item.all
+> items = WhiplashApi::Item.all
 >
-> items = WhiplashAPI::Item.sku('SOME-SKU-111')
+> items = WhiplashApi::Item.sku('SOME-SKU-111')
 >
-> order = WhiplashAPI::Order.last
+> order = WhiplashApi::Order.last
 >
-> orders = WhiplashAPI::Order.all(:params => {:status => 'shipped', :created_at_min => '2008-01-01'})
+> orders = WhiplashApi::Order.all(:params => {:status => 'shipped', :created_at_min => '2008-01-01'})
 >
-> order_item = WhiplashAPI::OrderItem.originator(ID_IN_YOUR_STORE)
+> order_item = WhiplashApi::OrderItem.originator(ID_IN_YOUR_STORE)
 >
 ```
 
@@ -100,7 +100,7 @@ You can run the tests on the current version of this gem, by cloning it
 locally. Tests require setting up the following environment variables:
 
 ```
-WL_API_KEY=7z5pCqMJRqpu1Hmbkn8o # for testing if API v1 support
+WL_API_KEY=Hc2BHTn3bcrwyPooyYTP # for testing if API v1 support
 WL_OAUTH_KEY=23447e1eaeddf2d1c4af4c9cf88524af2863cb1f72d500dd9328b34735a3f3b0 # for testing if API v2 support
 WL_API_VERSION=2 # By default, API v2 is used for all tests, but can be toggled using this.
 WL_CUSTOMER_ID=242 # Use the given Customer ID for API v2

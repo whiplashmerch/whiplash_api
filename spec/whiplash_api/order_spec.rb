@@ -17,7 +17,7 @@ describe WhiplashApi::Order do
   describe ".count" do
     it "counts the number of orders (with filtering) in the customer's account" do
       expect(described_class.count).to be_a(Integer)
-      expect(described_class.count(created_at_min: 4.hours.since)).to eq 0
+      expect(described_class.count(status: 100)).to be > 0
     end
   end
 

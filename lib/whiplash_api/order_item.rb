@@ -35,16 +35,29 @@ module WhiplashApi
         raise RecordNotFound, "No order item found with given ID."
       end
 
+      def separate(id, args={})
+        response = self.post("#{id}/separate")
+        sanitize_as_resource JSON.parse(response.body)
+      rescue WhiplashApi::RecordNotFound
+        raise RecordNotFound, "No order item found with given ID."
+      end
+
       def delete(*args)
         super
       rescue WhiplashApi::RecordNotFound
         raise RecordNotFound, "No order item was found with given ID."
       end
+
     end
 
     # instance methods
     def destroy
       self.class.delete(self.id)
     end
+
+    def separate
+      self.class.separate(self.id)
+    end
+
   end
 end
