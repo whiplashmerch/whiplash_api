@@ -49,7 +49,7 @@ Both API versions are fully supported by this gem. Unless specified, API v1 is u
 NOTE: The API Key is your OAuth access token if you are using API v2. If you want to use API v2, call `.api_version` before setting the OAuth token:
 
 ```
-WhiplashApi::Base.api_version = 2
+WhiplashApi::Base.api_version = 1
 WhiplashApi::Base.api_key = 'XXXXXXXXXXXXX'
 ```
 
