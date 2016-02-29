@@ -31,6 +31,10 @@ module WhiplashApi
         Thread.current["active.resource.currentthread.headers"]
       end
 
+      def api_version
+        @api_version ||= WhiplashApi::DEFAULT_API_VERSION
+      end
+
       def api_version=(v = nil)
         @api_version = v.to_i > 0 ? v.to_i : WhiplashApi::DEFAULT_API_VERSION
         headers['X-API-VERSION'] = @api_version.to_s
