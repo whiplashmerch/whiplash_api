@@ -10,8 +10,8 @@ module WhiplashApi
       attr_accessor :api_version, :api_key, :customer_id, :shop_id
 
       def testing!
-        # self.site = 'https://testing.whiplashmerch.com/api/'
-        self.site = 'http://localhost:3000/api/'
+        self.site = 'https://testing.whiplashmerch.com/api/'
+        # self.site = 'http://localhost:3000/api/'
 
         ActiveSupport::Notifications.subscribe("request.active_resource") do |*args|
           puts "[ActiveResource] Headers: #{WhiplashApi::Base.headers}"
