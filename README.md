@@ -1,8 +1,6 @@
 Whiplash API V1 - Ruby Client
 ================================
 
-[![Build Status](https://travis-ci.org/nikhgupta/whiplash_api.svg?branch=master)](https://travis-ci.org/nikhgupta/whiplash_api)
-
 This library provides a wrapper around the [Whiplash][whiplash] [Merchandising REST API][api] for use within Ruby apps or via the console.
 
 ### Requirements
@@ -12,14 +10,14 @@ This library provides a wrapper around the [Whiplash][whiplash] [Merchandising R
 - JSON
 - ActiveResource
 
-A valid API key (v1) or Oauth token (v2) is required to authenticate requests. You can find your API key on your customer account page. 
+A valid API key (v1) or Oauth token (v2) is required to authenticate requests. You can find your API key on your customer account page.
 
 You can also use the test API key `Hc2BHTn3bcrwyPooyYTP` to test this client.
 
 ### Installation
 
 ```
-gem install whiplash_api 
+gem install whiplash_api
 ```
 
 Or if you're using Bundler:
@@ -42,7 +40,7 @@ An error will be raised if no API key is provided.
 
 ### API Versions
 
-The default Whiplash API is v1 and uses API keys. The v2 API uses Oauth, and is currently available in private beta. 
+The default Whiplash API is v1 and uses API keys. The v2 API uses Oauth, and is currently available in private beta.
 
 Both API versions are fully supported by this gem. Unless specified, API v1 is used.
 
@@ -85,7 +83,7 @@ $ irb
 ```
 
 ### Contributing to the Whiplash API Gem
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.

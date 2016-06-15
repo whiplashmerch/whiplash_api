@@ -1,6 +1,8 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'pry'
 require 'whiplash_api'
+require 'webmock/rspec'
+WebMock.allow_net_connect!
 
 module WhiplashApi
   module TestHelpers
@@ -44,6 +46,17 @@ end
 RSpec.configure do |config|
   config.before(:each) do
     WhiplashApi::TestHelpers.setup!
+
+    stub_request(:get, /whiplashmerch.com\/api\/customers\/count.json/).to_return(status: 200, body: "2")
+
+    stub_request(:get, /whiplashmerch.com\/api\/customers\/\d+.json/).
+      to_return(status: 200, body: "{\"billing_address1\":\"123 Some Street\",\"billing_address2\":\"\",\"billing_address3\":null,\"billing_city\":\"Ann Arbor\",\"billing_company\":\"Whiplash Merchandising\",\"billing_contact_name\":\"Test User\",\"billing_country\":\"US\",\"billing_phone1\":\"\",\"billing_phone2\":\"\",\"billing_state\":\"MI\",\"default_warehouse_id\":1,\"id\":1,\"name\":\"Whiplash\"}", headers: {})
+
+    stub_request(:get, /whiplashmerch.com\/api\/customers.json/).
+      to_return(status: 200, body: "[{\"billing_address1\":\"\",\"billing_address2\":\"\",\"billing_address3\":null,\"billing_city\":\"\",\"billing_company\":\"Test Records\",\"billing_contact_name\":\"Test User\",\"billing_country\":\"US\",\"billing_phone1\":\"\",\"billing_phone2\":\"\",\"billing_state\":\"\",\"default_warehouse_id\":1,\"id\":1,\"name\":\"Test Recordings\"},{\"billing_address1\":\"123 Some St\",\"billing_address2\":\"\",\"billing_address3\":null,\"billing_city\":\"San Francisco\",\"billing_company\":null,\"billing_contact_name\":\"Test User\",\"billing_country\":\"US\",\"billing_phone1\":\"\",\"billing_phone2\":\"\",\"billing_state\":\"CA\",\"default_warehouse_id\":2,\"id\":2,\"name\":\"Test Clothing\"}]", headers: {})
+
+    stub_request(:get, /whiplashmerch.com\/api\/users\/me.json/).
+      to_return(status: 200, body: "{\"email\":\"test@testers.com\",\"first_name\":\"Test\",\"id\":1,\"last_name\":\"User\",\"role\":\"customer\",\"warehouse_id\":null,\"customer_ids\":[1,2]}")
   end
 
   config.before(:suite) do
