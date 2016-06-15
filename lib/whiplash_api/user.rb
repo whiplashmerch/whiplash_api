@@ -4,6 +4,7 @@ module WhiplashApi
 
       def me
         self.get(:me)
+        sanitize_as_resource self.get(:me)
       end
 
     end

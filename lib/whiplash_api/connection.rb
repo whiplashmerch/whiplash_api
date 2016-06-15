@@ -20,7 +20,8 @@ module WhiplashApi
       else
         raise
       end
+    rescue ActiveResource::ResourceNotFound
+      raise WhiplashApi::Error, "The method you've attemped is not available for this resource or API version."
     end
   end
 end
-
