@@ -17,7 +17,7 @@ module WhiplashApi
       end
 
       def count(args={})
-        self.get(:count, args)
+        self.get(:count, args)[:count]
       end
 
       def update(id, args={})

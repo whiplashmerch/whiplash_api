@@ -2,7 +2,7 @@ module WhiplashApi
   class Item < Base
     class << self
       def count(args={})
-        self.get(:count, args)
+        self.get(:count, args)[:count]
       end
 
       def sku(sku, args={})
