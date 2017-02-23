@@ -121,6 +121,6 @@ that the API conforms to the tests, at the same time.
 Copyright (c) 2015 Whiplash Merchandising/Mark Dickson. See LICENSE.txt for further details.
 
 
-  [whiplash]: https://www.whiplashmerch.com/
-  [api]: https://www.whiplashmerch.com/developers/api
+  [whiplash]: https://www.getwhiplash.com/
+  [api]: https://www.getwhiplash.com/developers/api
   [app]: https://github.com/ideaoforder/whiplash-rails-example

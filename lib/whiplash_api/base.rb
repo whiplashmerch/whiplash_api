@@ -3,14 +3,14 @@ module WhiplashApi
   class RecordNotFound < Error; end
 
   class Base < ActiveResource::Base
-    self.site   = 'https://www.whiplashmerch.com/api/'
+    self.site   = 'https://www.getwhiplash.com/api/'
     self.format = :json
 
     class << self
       attr_accessor :api_version, :api_key, :customer_id, :shop_id
 
       def testing!
-        self.site = 'https://testing.whiplashmerch.com/api/'
+        self.site = 'https://testing.getwhiplash.com/api/'
         # self.site = 'http://localhost:3000/api/'
 
         ActiveSupport::Notifications.subscribe("request.active_resource") do |*args|
